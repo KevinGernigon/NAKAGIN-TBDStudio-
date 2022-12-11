@@ -8,8 +8,16 @@ public class S_Change_Emissive : MonoBehaviour
     [SerializeField]
     private List<GameObject> _lumiere;
 
-/*    [SerializeField]
-    private GameObject _playerHitbox;*/
+    /*    [SerializeField]
+        private GameObject _playerHitbox;*/
+
+    private void Start()
+    {
+        for (int i = 0; i < _lumiere.Count; i++)
+        {
+            _lumiere[i].GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(255, 0, 0, 1));
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,7 +26,7 @@ public class S_Change_Emissive : MonoBehaviour
             Debug.Log("TriggerEnter");
             for (int i = 0; i < _lumiere.Count; i++)
             {
-                _lumiere[i].GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(255, 0, 0, 1));
+                _lumiere[i].GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0, 0, 255, 1));
             }
         }
     }
@@ -29,7 +37,7 @@ public class S_Change_Emissive : MonoBehaviour
         {
             for (int i = 0; i < _lumiere.Count; i++)
             {
-                _lumiere[i].GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(255, 255, 255, 1));
+                _lumiere[i].GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(255, 0, 0, 1));
             }
         }
     }
