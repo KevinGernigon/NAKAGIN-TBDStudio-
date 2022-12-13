@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 public class S_PlayerCam : MonoBehaviour
 {
     public float _sensX;
     public float _sensY;
+    [SerializeField]
+    private Slider _sensiSlider;
 
     [Header("References")]
     public S_PlayerMovement pm;
@@ -44,8 +47,8 @@ public class S_PlayerCam : MonoBehaviour
         CameraTiltWallRunFPS();
         CameraTiltSlide();
         // Mouse Input //
-        _mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * _sensX;
-        _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * _sensY;
+        _mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * _sensX * _sensiSlider.value;
+        _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * _sensY * _sensiSlider.value;
         ////////////////
         ///
 

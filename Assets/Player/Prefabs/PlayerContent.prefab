@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 5064901078247943022}
   m_Layer: 9
   m_Name: PlayerContent
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,7 +112,6 @@ MonoBehaviour:
   _airMultiplier: 0.2
   _crouchSpeed: 3.5
   _crouchYScale: 0.5
-  _jumpKey: 32
   _sprintKey: 304
   _crouchKey: 99
   _playerHeight: 2
@@ -171,6 +170,7 @@ MonoBehaviour:
   jumpKey: 32
   _climbJumps: 1
   _climbJumpsLeft: 0
+  _counterClimbPropulsion: 0
   _detectionLength: 1
   _sphereCastRadius: 0.25
   _maxWallLookAngle: 30
@@ -210,6 +210,7 @@ MonoBehaviour:
   _isWallLeft: 0
   _isWallRight: 0
   _isWallRemembered: 0
+  _angleValue: 0
   _exitWallTime: 0.2
   _isUsingGravity: 1
   _gravityCounterForce: 20
@@ -233,6 +234,7 @@ MonoBehaviour:
   _dashDuration: 0.5
   _isUsingCameraForward: 0
   _isAllowingAllDirections: 1
+  _isDisablingGravity: 1
   _isResettingVel: 1
   _dashCd: 1.5
   _dashCdTimer: 0
@@ -282,7 +284,7 @@ GameObject:
   - component: {fileID: 5064901078625514806}
   m_Layer: 9
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
