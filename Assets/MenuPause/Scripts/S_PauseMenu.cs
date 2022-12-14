@@ -15,6 +15,7 @@ public class S_PauseMenu : MonoBehaviour
     {
 
         _pauseMenu.SetActive(false);
+        S_Debugger.AddButton("Quit", QuitGame);
 
     }
 
