@@ -87,12 +87,6 @@ public class S_Sliding : MonoBehaviour
     {
         Vector3 _inputDirection = _orientation.forward * _verticalInput + _orientation.right * _horizontalInput;
 
-
-        /*if (!pm._isGrounded && Input.GetKeyDown(_slideKey))
-        {
-            //Coroutine svp
-        }*/
-
         //sliding normal 
         if (!pm.OnSlope() || rb.velocity.y > -0.1f)
         {
