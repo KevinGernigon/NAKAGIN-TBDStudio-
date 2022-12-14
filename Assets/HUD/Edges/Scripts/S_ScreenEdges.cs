@@ -64,7 +64,6 @@ public class S_ScreenEdges : MonoBehaviour
             {
                 _screenEdges.color = new Color(_screenEdges.color.r, _screenEdges.color.b, _screenEdges.color.g, 0.5f);
             }
-            Debug.Log(_screenEdges.color.a);
             yield return new WaitForSeconds(0.01f);
         }
     }

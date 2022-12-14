@@ -47,6 +47,12 @@ public class S_Climbing : MonoBehaviour
         WallCheck();
         StateMachine();
 
+        S_Debugger.UpdatableLog("_isClimbing", _isClimbing);
+        S_Debugger.UpdatableLog("_isExitingWall", _isExitingWall);
+        S_Debugger.UpdatableLog("_exitingWallTimer", _exitingWallTimer);
+        S_Debugger.UpdatableLog("_wallLookAngle", _wallLookAngle);
+        S_Debugger.UpdatableLog("_maxWallLookAngle", _maxWallLookAngle);
+
         if (_isClimbing && !_isExitingWall)
         {
             ClimbingMovement();
@@ -57,7 +63,7 @@ public class S_Climbing : MonoBehaviour
     private void StateMachine()
     {
         //State 1 - Climbing
-        if (_isWallFront && Input.GetKey(KeyCode.Z) && _wallLookAngle < _maxWallLookAngle && !_isExitingWall)
+        if (_isWallFront && Input.GetKey(KeyCode.Z) && _wallLookAngle < _maxWallLookAngle)
         {
             if (!_isClimbing && _climbTimer > 0)
             {
@@ -71,26 +77,34 @@ public class S_Climbing : MonoBehaviour
             if (_climbTimer <= 0)
             {
                 StopClimbingByTime();
+                S_Debugger.Log("Stop Climbing by time", Color.magenta);
+
             }
         }
-
         //State 2 - Exiting
         else if (_isExitingWall)
         {
-            if (_isClimbing) StopClimbingByReachPoint();
+            if (_isClimbing)
+            {
+                StopClimbingByReachPoint();
+                S_Debugger.Log("J'ai Climbé Exiting");
+
+            }
 
             if (_exitingWallTimer > 0) _exitingWallTimer -= Time.deltaTime;
             if (_exitingWallTimer < 0) _isExitingWall = false;
         }
-
         //State 3 - None
         else
         {
             if (_isClimbing)
             {
                 StopClimbingByReachPoint();
+                S_Debugger.Log("J'ai Climbé None", Color.red);
+
             }
         }
+
 
         if (_isWallFront && Input.GetKeyDown(jumpKey) && _climbJumpsLeft > 0)
         {

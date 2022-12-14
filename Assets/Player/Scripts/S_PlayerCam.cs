@@ -30,6 +30,8 @@ public class S_PlayerCam : MonoBehaviour
     [SerializeField] private float _camTiltTime;
     [SerializeField] private float _wallSlideFovTime;
     [SerializeField] private float _wallSlideFov;
+    public bool _isAxisXInverted;
+    public bool _isAxisYInverted;
 
 
     public float tilt { get; private set; }
@@ -39,6 +41,8 @@ public class S_PlayerCam : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        _isAxisXInverted = true;
+        _isAxisYInverted = true;
     }
 
     // Update is called once per frame
@@ -47,8 +51,15 @@ public class S_PlayerCam : MonoBehaviour
         CameraTiltWallRunFPS();
         CameraTiltSlide();
         // Mouse Input //
-        _mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * _sensX * _sensiSlider.value;
-        _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * _sensY * _sensiSlider.value;
+        if (_isAxisXInverted)
+            _mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * _sensX * _sensiSlider.value;
+        else
+            _mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * -_sensX * _sensiSlider.value;
+
+        if (_isAxisYInverted)
+            _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * _sensY * _sensiSlider.value;
+        else
+            _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * -_sensY * _sensiSlider.value;
         ////////////////
         ///
 
@@ -87,12 +98,28 @@ public class S_PlayerCam : MonoBehaviour
         if (pm._isSliding)
         {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _wallSlideFov, _wallSlideFovTime * Time.deltaTime);
-                tilt = Mathf.Lerp(tilt, _camTiltSlide, _camTiltTime * Time.deltaTime);
-            }
+            tilt = Mathf.Lerp(tilt, _camTiltSlide, _camTiltTime * Time.deltaTime);
+        }
         else
         {
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _wallSlideFovTime* Time.deltaTime);
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _wallSlideFovTime * Time.deltaTime);
             tilt = Mathf.Lerp(tilt, 0, _camTiltTime * Time.deltaTime);
         }
+    }
+
+    public void InvertXAxis()
+    {
+        if (!_isAxisXInverted)
+            _isAxisXInverted = true;
+        else
+            _isAxisXInverted = false;
+    }
+
+    public void InvertYAxis()
+    {
+        if (!_isAxisYInverted)
+            _isAxisYInverted = true;
+        else
+            _isAxisYInverted = false;
     }
 }

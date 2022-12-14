@@ -8,11 +8,14 @@ public class S_PauseMenu : MonoBehaviour
     public GameObject _pauseMenu;
     public static bool _isPaused;
     private bool _ischoose;
+    [SerializeField]
+    private GameObject _player;
 
     void Start()
     {
 
         _pauseMenu.SetActive(false);
+        S_Debugger.AddButton("Quit", QuitGame);
 
     }
 
@@ -97,6 +100,10 @@ public class S_PauseMenu : MonoBehaviour
         _ischoose = false;
     }
 
-
+    public void ChangePlayerPos(Transform newPos)
+    {
+        ResumeGame();
+        _player.transform.position = newPos.position;
+    }
 
 }
