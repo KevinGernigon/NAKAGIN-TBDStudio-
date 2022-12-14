@@ -5616,7 +5616,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e667fc3350bf4d84f94bbd5085d50842, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.69
+      value: -0.89
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e667fc3350bf4d84f94bbd5085d50842, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6620,6 +6620,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1882040589}
     m_Modifications:
     - target: {fileID: 87840223746365994, guid: c903aa710c688e24b91c8321ab63d5f6, type: 3}
+      propertyPath: pm
+      value: 
+      objectReference: {fileID: 75311098}
+    - target: {fileID: 87840223746365994, guid: c903aa710c688e24b91c8321ab63d5f6, type: 3}
       propertyPath: _cameraPosition
       value: 
       objectReference: {fileID: 1816246480}
@@ -6699,6 +6703,10 @@ PrefabInstance:
       propertyPath: _sensiSlider
       value: 
       objectReference: {fileID: 1253402453}
+    - target: {fileID: 87840223980359187, guid: c903aa710c688e24b91c8321ab63d5f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 87840223980359188, guid: c903aa710c688e24b91c8321ab63d5f6, type: 3}
       propertyPath: near clip plane
       value: 0.01
