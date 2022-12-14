@@ -69,7 +69,15 @@ public class S_PauseMenu : MonoBehaviour
             ResumeGame();
             StartCoroutine(waitcastchoose());
             Scene _scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(_scene.name);
+            if (_scene.name == "Tom_Scene")
+            {
+                SceneManager.LoadScene(_scene.name);
+                SceneManager.LoadScene("Alexis_Blocking_Environment", LoadSceneMode.Additive);
+            }
+            else
+            {
+                SceneManager.LoadScene(_scene.name);
+            }
         }
         
     }

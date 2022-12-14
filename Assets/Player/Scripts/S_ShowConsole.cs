@@ -10,15 +10,9 @@ public class S_ShowConsole : MonoBehaviour
     {
         Debug.developerConsoleVisible = true;
 
-        S_Debugger.AddButton("Test", DebugTest);
-
         S_Debugger.AddButton("Scene Maxime", ChangeSceneMaxime);
         S_Debugger.AddButton("Scene GD", ChangeSceneGD);
-    }
-
-    private void DebugTest()
-    {
-        S_Debugger.Log("Coucou");
+        S_Debugger.AddButton("Scene LD", ChangeSceneLD);
     }
 
     private void ChangeSceneMaxime()
@@ -28,5 +22,11 @@ public class S_ShowConsole : MonoBehaviour
     private void ChangeSceneGD()
     {
         SceneManager.LoadScene("TestGDScene");
+    }
+
+    private void ChangeSceneLD()
+    {
+        SceneManager.LoadScene("Tom_Scene");
+        SceneManager.LoadScene("Alexis_Blocking_Environment", LoadSceneMode.Additive);
     }
 }

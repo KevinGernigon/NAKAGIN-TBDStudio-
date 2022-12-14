@@ -47,11 +47,11 @@ public class S_Climbing : MonoBehaviour
         WallCheck();
         StateMachine();
 
-        S_Debugger.UpdatableLog("_isClimbing", _isClimbing);
+        /*S_Debugger.UpdatableLog("_isClimbing", _isClimbing);
         S_Debugger.UpdatableLog("_isExitingWall", _isExitingWall);
         S_Debugger.UpdatableLog("_exitingWallTimer", _exitingWallTimer);
         S_Debugger.UpdatableLog("_wallLookAngle", _wallLookAngle);
-        S_Debugger.UpdatableLog("_maxWallLookAngle", _maxWallLookAngle);
+        S_Debugger.UpdatableLog("_maxWallLookAngle", _maxWallLookAngle);*/
 
         if (_isClimbing && !_isExitingWall)
         {
@@ -77,7 +77,6 @@ public class S_Climbing : MonoBehaviour
             if (_climbTimer <= 0)
             {
                 StopClimbingByTime();
-                S_Debugger.Log("Stop Climbing by time", Color.magenta);
 
             }
         }
@@ -87,7 +86,6 @@ public class S_Climbing : MonoBehaviour
             if (_isClimbing)
             {
                 StopClimbingByReachPoint();
-                S_Debugger.Log("J'ai Climbé Exiting");
 
             }
 
@@ -100,7 +98,6 @@ public class S_Climbing : MonoBehaviour
             if (_isClimbing)
             {
                 StopClimbingByReachPoint();
-                S_Debugger.Log("J'ai Climbé None", Color.red);
 
             }
         }
