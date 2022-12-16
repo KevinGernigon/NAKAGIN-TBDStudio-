@@ -27194,7 +27194,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh252256
+  m_Name: pb_Mesh25180
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -29095,7 +29095,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5064901078247943018, guid: f5b1a24bbedb28a41bca5f9578fcd43e, type: 3}
       propertyPath: _jumpForce
-      value: 28
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 5064901078247943018, guid: f5b1a24bbedb28a41bca5f9578fcd43e, type: 3}
       propertyPath: _sprintKey
@@ -29139,7 +29139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5064901078247943020, guid: f5b1a24bbedb28a41bca5f9578fcd43e, type: 3}
       propertyPath: _climbJumpUpForce
-      value: 50
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 5064901078247943020, guid: f5b1a24bbedb28a41bca5f9578fcd43e, type: 3}
       propertyPath: _climbJumpBackForce
@@ -33153,7 +33153,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh251970
+  m_Name: pb_Mesh25008
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -36152,7 +36152,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh251800
+  m_Name: pb_Mesh24890
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -37180,7 +37180,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh255496
+  m_Name: pb_Mesh27228
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

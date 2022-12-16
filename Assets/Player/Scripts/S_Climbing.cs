@@ -150,6 +150,7 @@ public class S_Climbing : MonoBehaviour
 
     private void ClimbJump()
     {
+        S_Debugger.print("J'ai Climb Jumpé");
         _isExitingWall = true;
         _exitingWallTimer = _exitWallTime;
         Vector3 forceToApply = transform.up * _climbJumpUpForce + _frontWallHit.normal * _climbJumpBackForce;

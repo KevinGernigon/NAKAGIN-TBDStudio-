@@ -99,7 +99,7 @@ public class S_PlayerMovement : MonoBehaviour
         InputCommand();
         SpeedControl();
         StateHandler();
-        
+
 
         //handle drag
         if (state == MovementState.walking || state == MovementState.sprinting || state == MovementState.crouching)
@@ -330,8 +330,8 @@ public class S_PlayerMovement : MonoBehaviour
         _exitingSlope = true;
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         //rb.velocity = new Vector3(rb.velocity.x, ??, rb.velocity.z);
-
         rb.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
+        
     }
 
     private void ResetJump()
