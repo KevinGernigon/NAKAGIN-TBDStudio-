@@ -5969,7 +5969,7 @@ GameObject:
   - component: {fileID: 362669945}
   - component: {fileID: 362669944}
   m_Layer: 11
-  m_Name: Mur_climb_13
+  m_Name: Mur_tunnel_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22707,7 +22707,7 @@ GameObject:
   - component: {fileID: 1695896915}
   - component: {fileID: 1695896914}
   m_Layer: 11
-  m_Name: Mur_climb_14
+  m_Name: Plafond_tunnel_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26310,7 +26310,7 @@ GameObject:
   - component: {fileID: 1976621647}
   - component: {fileID: 1976621646}
   m_Layer: 11
-  m_Name: Mur_climb_12
+  m_Name: Mur_tunnel_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
