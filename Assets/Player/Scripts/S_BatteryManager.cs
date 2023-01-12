@@ -10,21 +10,21 @@ public class S_BatteryManager : MonoBehaviour
 
     [Header("Battery")]
     [SerializeField]
-    private float _nbrBattery;
+    public float _nbrBattery;
     [SerializeField]
-    private float _nbrMaxBattery = 3 ;
+    public float _nbrMaxBattery = 3 ;
     [SerializeField]
     private float _nbrMinBattery = 0;
     [SerializeField]
-    private float _nbrBatteryFind = 1;
+    private float _nbrBatteryFind = 0;
 
     [SerializeField]
-    private bool _overdrive = false;
+    public bool _overdrive = false;
 
     
 
 
-    private void UseOneBattery()
+    public void UseOneBattery()
     {
         if( _nbrBattery >= 1)
         {
@@ -37,7 +37,7 @@ public class S_BatteryManager : MonoBehaviour
 
     }
 
-    private void UseTwoBattery()
+    public void UseTwoBattery()
     {
         if (_nbrBattery >= 2)
         {
@@ -50,7 +50,7 @@ public class S_BatteryManager : MonoBehaviour
 
     }
 
-    private void UseTreeBattery()
+    public void UseThreeBattery()
     {
         if (_nbrBattery >= 3)
         {
@@ -63,7 +63,7 @@ public class S_BatteryManager : MonoBehaviour
 
     }
 
-    private void UseAllBattery()
+    public void UseAllBattery()
     {
         if (_nbrBattery >= _nbrMaxBattery)
         {
@@ -76,32 +76,30 @@ public class S_BatteryManager : MonoBehaviour
 
     }
 
-    private void GetOneBattery()
+    public void GetOneBattery()
     {
         _nbrBatteryFind = 1;
-        if (_nbrBattery < _nbrMaxBattery && (_nbrBatteryFind + _nbrBattery) <= _nbrMaxBattery )
+        if ((_nbrBattery < _nbrMaxBattery) && (_nbrBatteryFind + _nbrBattery) <= _nbrMaxBattery )
         {
             _nbrBattery = _nbrBattery + _nbrBatteryFind;
 
-            if ( _nbrBattery + _nbrBatteryFind > _nbrMaxBattery )
+            if ( _nbrBattery  > _nbrMaxBattery )
             {
                 _nbrBattery = _nbrMaxBattery;
-
-                if(_overdrive!)
-                {
-                    _overdrive = true;
-                }
-                
             }
         }
         else
         {
+            if (!_overdrive)
+            {
+                _overdrive = true;
+            }
             //UI trop de batterie //Overdrive
         }
         
         
     }
-    private void GetTwoBattery()
+    public void GetTwoBattery()
     {
         _nbrBatteryFind = 2;
         if (_nbrBattery < _nbrMaxBattery && (_nbrBatteryFind + _nbrBattery) <= _nbrMaxBattery)
@@ -112,21 +110,22 @@ public class S_BatteryManager : MonoBehaviour
             {
                 _nbrBattery = _nbrMaxBattery;
 
-                if (_overdrive!)
-                {
-                    _overdrive = true;
-                }
             }
         }
         else
         {
+
+            if (!_overdrive)
+            {
+                _overdrive = true;
+            }
             //UI trop de batterie //Overdrive
         }
 
         
     }
 
-    private void GetTreeBattery()
+    public void GetThreeBattery()
     {
         _nbrBatteryFind = 3;
         if (_nbrBattery < _nbrMaxBattery && (_nbrBatteryFind + _nbrBattery) <= _nbrMaxBattery)
@@ -136,21 +135,22 @@ public class S_BatteryManager : MonoBehaviour
             {
                 _nbrBattery = _nbrMaxBattery;
 
-                if (_overdrive!)
-                {
-                    _overdrive = true;
-                }
             }
         }
         else
         {
+
+            if (!_overdrive)
+            {
+                _overdrive = true;
+            }
             //UI trop de batterie //Overdrive
         }
 
     }
 
 
-    private void UseOverdrive()
+    public void UseOverdrive()
     {
         if(_overdrive)
         {

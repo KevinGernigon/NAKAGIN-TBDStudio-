@@ -8,6 +8,7 @@ public class S_CharacterUpgrade : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private S_PlayerMovement pm;
+    [SerializeField] private S_BatteryManager ScriptBatteryManager;
 
     [Header("Boolean")]
     private bool _isSpeedUpgradable;
@@ -23,25 +24,18 @@ public class S_CharacterUpgrade : MonoBehaviour
 
     private void InputManager()
     {
-        if (Input.GetKeyDown(KeyCode.E) && _isSpeedUpgradable)
+        if ((Input.GetButtonDown("BoostSpeed") && _isSpeedUpgradable) && ScriptBatteryManager._nbrBattery >= 1)
         {
+            ScriptBatteryManager.UseOneBattery();
             _isSpeedUpgradable = false;
             SpeedUpgrade();
             StartCoroutine(upgradeSpeed());
         }
-
-        if (Input.GetKeyDown(KeyCode.F))
-            DashUpgrade();
     }
 
     private void SpeedUpgrade()
     {
         pm.SpeedValueUpgrade();
-    }
-
-    private void DashUpgrade()
-    {
-        pm.DashValueUpgrade();
     }
 
     IEnumerator upgradeSpeed()
