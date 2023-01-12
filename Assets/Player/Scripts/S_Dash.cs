@@ -14,6 +14,7 @@ public class S_Dash : MonoBehaviour
     [SerializeField] private float _dashForce;
     [SerializeField] private float _dashUpwardForce;
     [SerializeField] private float _dashDuration;
+    public float _dashUpgradeForce;
 
     [Header("Settings")]
     [SerializeField] private bool _isUsingCameraForward = true;
@@ -33,6 +34,7 @@ public class S_Dash : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _pm = GetComponent<S_PlayerMovement>();
+        _dashUpgradeForce = 1;
     }
 
     // Update is called once per frame
