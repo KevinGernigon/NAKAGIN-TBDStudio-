@@ -50,11 +50,17 @@ public class S_PlayerMovement : MonoBehaviour
     private RaycastHit _slopeHit;
     private bool _exitingSlope;
 
+    [Header("Upgrade values")]
+    private float _upgradeSpeedValue;
+
     [Header("References")]
     [SerializeField] private S_Climbing ClimbingScript;
-
+    [SerializeField] private S_Dash ScriptDash;
     [SerializeField] private Transform _orientation;
 
+
+    [Header("Raycast")]
+    [SerializeField] private float _valueRaycast;
     float _horizontalInput;
     float _verticalInput;
     
@@ -81,7 +87,7 @@ public class S_PlayerMovement : MonoBehaviour
     public bool _isWallRunning;
     public bool _isClimbing;
     public bool _isDashing;
-
+    public bool _isReachUpgrade;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -89,17 +95,22 @@ public class S_PlayerMovement : MonoBehaviour
         _readyToJump = true;
 
         _startYScale = transform.localScale.y;
+        _upgradeSpeedValue = 1;
     }
 
     private void Update()
     {
         //Ground Check
-        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.2f, _whatIsGround);
-
+        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + _valueRaycast, _whatIsGround);
+        
         InputCommand();
         SpeedControl();
         StateHandler();
-        
+
+        if (_isReachUpgrade)
+        {
+            SpeedValueUpgrade();
+        }
 
         //handle drag
         if (state == MovementState.walking || state == MovementState.sprinting || state == MovementState.crouching)
@@ -287,12 +298,12 @@ public class S_PlayerMovement : MonoBehaviour
 
         else if (_isGrounded) 
         {
-            rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _upgradeSpeedValue, ForceMode.Force);
         }
 
         else if (!_isGrounded)
         {
-            rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier, ForceMode.Force);
+            rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier * _upgradeSpeedValue, ForceMode.Force);
         }
 
         if (!_isWallRunning)
@@ -355,5 +366,29 @@ public class S_PlayerMovement : MonoBehaviour
     public Vector3 GetSlopeMoveDirection(Vector3 direction)
     {
         return Vector3.ProjectOnPlane(direction, _slopeHit.normal).normalized;
+    }
+
+    public void SpeedValueUpgrade()
+    {
+        bool _ReachUpgradeBool;
+
+        _ReachUpgradeBool = true;
+
+        if(_ReachUpgradeBool)
+        {
+            StartCoroutine(upgradeSpeed());
+            _ReachUpgradeBool = false;
+        }       
+    }
+
+    IEnumerator upgradeSpeed()
+    {
+        Debug.Log("Start boost");
+        _upgradeSpeedValue += 9;
+        _dashSpeed += 15;
+        yield return new WaitForSeconds(2f);
+        _dashSpeed -= 15;
+        _upgradeSpeedValue -= 9;
+        Debug.Log("End boost");
     }
 }
