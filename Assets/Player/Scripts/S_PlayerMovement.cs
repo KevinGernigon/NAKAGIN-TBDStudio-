@@ -50,6 +50,10 @@ public class S_PlayerMovement : MonoBehaviour
     private RaycastHit _slopeHit;
     private bool _exitingSlope;
 
+    [Header("Upgrade values")]
+    [SerializeField] public float _upgradeSpeedValue;
+    [SerializeField] public float _upgradeDashValue;
+
     [Header("References")]
     [SerializeField] private S_Climbing ClimbingScript;
 
@@ -81,7 +85,7 @@ public class S_PlayerMovement : MonoBehaviour
     public bool _isWallRunning;
     public bool _isClimbing;
     public bool _isDashing;
-
+    public bool _isReachUpgrade;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -89,6 +93,8 @@ public class S_PlayerMovement : MonoBehaviour
         _readyToJump = true;
 
         _startYScale = transform.localScale.y;
+        _upgradeSpeedValue = 1;
+        _upgradeDashValue = 1;
     }
 
     private void Update()
@@ -99,7 +105,12 @@ public class S_PlayerMovement : MonoBehaviour
         InputCommand();
         SpeedControl();
         StateHandler();
-        
+
+        if (_isReachUpgrade)
+        {
+            SpeedValueUpgrade();
+            DashValueUpgrade();
+        }
 
         //handle drag
         if (state == MovementState.walking || state == MovementState.sprinting || state == MovementState.crouching)
@@ -287,12 +298,12 @@ public class S_PlayerMovement : MonoBehaviour
 
         else if (_isGrounded) 
         {
-            rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _upgradeSpeedValue, ForceMode.Force);
         }
 
         else if (!_isGrounded)
         {
-            rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier, ForceMode.Force);
+            rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier * _upgradeSpeedValue, ForceMode.Force);
         }
 
         if (!_isWallRunning)
@@ -355,5 +366,38 @@ public class S_PlayerMovement : MonoBehaviour
     public Vector3 GetSlopeMoveDirection(Vector3 direction)
     {
         return Vector3.ProjectOnPlane(direction, _slopeHit.normal).normalized;
+    }
+
+    public void SpeedValueUpgrade()
+    {
+        bool _ReachUpgradeBool;
+
+        _ReachUpgradeBool = true;
+
+        if(_ReachUpgradeBool)
+        {
+            StartCoroutine(upgradeSpeed());
+            _ReachUpgradeBool = false;
+        }       
+    }
+
+    public void DashValueUpgrade()
+    {
+        bool _ReachUpgradeBool;
+
+        _ReachUpgradeBool = true;
+
+        if (_ReachUpgradeBool)
+        {
+            _upgradeDashValue += 1;
+            _ReachUpgradeBool = false;
+        }
+    }
+
+    IEnumerator upgradeSpeed()
+    {
+        _upgradeSpeedValue += 9;
+        yield return new WaitForSeconds(2f);
+        _upgradeSpeedValue -= 9;
     }
 }

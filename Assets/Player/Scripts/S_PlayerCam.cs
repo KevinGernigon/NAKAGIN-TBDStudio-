@@ -32,7 +32,7 @@ public class S_PlayerCam : MonoBehaviour
     [SerializeField] private float _wallSlideFov;
     public bool _isAxisXInverted;
     public bool _isAxisYInverted;
-
+    public bool _isActive;
 
     public float tilt { get; private set; }
 
@@ -43,6 +43,9 @@ public class S_PlayerCam : MonoBehaviour
         Cursor.visible = false;
         _isAxisXInverted = true;
         _isAxisYInverted = true;
+        _isActive = true;
+
+
     }
 
     // Update is called once per frame
@@ -50,26 +53,30 @@ public class S_PlayerCam : MonoBehaviour
     {
         CameraTiltWallRunFPS();
         CameraTiltSlide();
-        // Mouse Input //
-        if (_isAxisXInverted)
-            _mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * _sensX * _sensiSlider.value;
-        else
-            _mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * -_sensX * _sensiSlider.value;
 
-        if (_isAxisYInverted)
-            _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * _sensY * _sensiSlider.value;
-        else
-            _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * -_sensY * _sensiSlider.value;
-        ////////////////
-        ///
+        if (_isActive)
+        {
+            // Mouse Input //
+            if (_isAxisXInverted)
+                _mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * _sensX * _sensiSlider.value;
+            else
+                _mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * -_sensX * _sensiSlider.value;
 
-        _yRotation += _mouseX;
-        _xRotation -= _mouseY;
-        _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
+            if (_isAxisYInverted)
+                _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * _sensY * _sensiSlider.value;
+            else
+                _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * -_sensY * _sensiSlider.value;
+            ////////////////
+            _yRotation += _mouseX;
+            _xRotation -= _mouseY;
+            _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
 
-        transform.rotation = Quaternion.Euler(_xRotation, _yRotation, tilt);
-        _orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
+            transform.rotation = Quaternion.Euler(_xRotation, _yRotation, tilt);
+            _orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
+        }
 
+        if (Input.GetKeyDown(KeyCode.H))
+            CameraReset();
     }
 
     private void CameraTiltWallRunFPS()
@@ -121,5 +128,18 @@ public class S_PlayerCam : MonoBehaviour
             _isAxisYInverted = true;
         else
             _isAxisYInverted = false;
+    }
+
+    public void CameraReset()
+    {
+        StartCoroutine(resetcam());      
+    }
+
+    IEnumerator resetcam()
+    {
+        _isActive = false;
+        Camera.main.transform.rotation = Quaternion.identity;
+        yield return new WaitForSeconds(1f);
+        _isActive = true;
     }
 }

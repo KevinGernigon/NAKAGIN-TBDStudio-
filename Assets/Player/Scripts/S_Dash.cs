@@ -60,7 +60,7 @@ public class S_Dash : MonoBehaviour
             forwardT = orientation;
 
         Vector3 direction = GetDirection(forwardT);
-        Vector3 forceToApply = direction * _dashForce + orientation.up * _dashUpwardForce;
+        Vector3 forceToApply = direction * _dashForce * _pm._upgradeDashValue + orientation.up * _dashUpwardForce;
 
         if (_isDisablingGravity)
                _rb.useGravity = false;
