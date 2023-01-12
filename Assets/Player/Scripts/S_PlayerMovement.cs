@@ -51,14 +51,16 @@ public class S_PlayerMovement : MonoBehaviour
     private bool _exitingSlope;
 
     [Header("Upgrade values")]
-    [SerializeField] public float _upgradeSpeedValue;
-    [SerializeField] public float _upgradeDashValue;
+    private float _upgradeSpeedValue;
 
     [Header("References")]
     [SerializeField] private S_Climbing ClimbingScript;
-
+    [SerializeField] private S_Dash ScriptDash;
     [SerializeField] private Transform _orientation;
 
+
+    [Header("Raycast")]
+    [SerializeField] private float _valueRaycast;
     float _horizontalInput;
     float _verticalInput;
     
@@ -94,14 +96,13 @@ public class S_PlayerMovement : MonoBehaviour
 
         _startYScale = transform.localScale.y;
         _upgradeSpeedValue = 1;
-        _upgradeDashValue = 1;
     }
 
     private void Update()
     {
         //Ground Check
-        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.2f, _whatIsGround);
-
+        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + _valueRaycast, _whatIsGround);
+        
         InputCommand();
         SpeedControl();
         StateHandler();
@@ -109,7 +110,6 @@ public class S_PlayerMovement : MonoBehaviour
         if (_isReachUpgrade)
         {
             SpeedValueUpgrade();
-            DashValueUpgrade();
         }
 
         //handle drag
@@ -381,23 +381,14 @@ public class S_PlayerMovement : MonoBehaviour
         }       
     }
 
-    public void DashValueUpgrade()
-    {
-        bool _ReachUpgradeBool;
-
-        _ReachUpgradeBool = true;
-
-        if (_ReachUpgradeBool)
-        {
-            _upgradeDashValue += 1;
-            _ReachUpgradeBool = false;
-        }
-    }
-
     IEnumerator upgradeSpeed()
     {
+        Debug.Log("Start boost");
         _upgradeSpeedValue += 9;
+        _dashSpeed += 15;
         yield return new WaitForSeconds(2f);
+        _dashSpeed -= 15;
         _upgradeSpeedValue -= 9;
+        Debug.Log("End boost");
     }
 }
