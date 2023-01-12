@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class S_Respawn : MonoBehaviour
 {
-    
+
     [SerializeField] private Transform _player;
     [SerializeField] private Transform _respawnplayer;
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,5 +17,4 @@ public class S_Respawn : MonoBehaviour
             Physics.SyncTransforms();
         }
     }
-
 }
