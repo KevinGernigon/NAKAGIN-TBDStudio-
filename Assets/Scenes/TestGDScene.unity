@@ -7315,6 +7315,7 @@ MonoBehaviour:
   ScriptBatteryManager: {fileID: 206749519}
   _jetpackForce: 100
   _jetpackUpwardForce: 140
+  _dividePer: 2
   _isJetpackAvaible: 0
 --- !u!1 &383209671
 GameObject:

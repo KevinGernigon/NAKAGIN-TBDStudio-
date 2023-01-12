@@ -14,13 +14,16 @@ public class S_Jetpack : MonoBehaviour
     [Header("Jetpack")]
     [SerializeField] private float _jetpackForce;
     [SerializeField] private float _jetpackUpwardForce;
+    [SerializeField] private float _dividePer;
     private bool _isGravityDisable;
+
 
     private Vector3 saveForceToApplyInAir;
     private Vector3 saveForceToApplyOnGround;
 
     private bool _isTriggerBoxTrue;
     private bool _isMaxForce;
+    
     [SerializeField] private bool _isJetpackAvaible;
     void Start()
     {
@@ -82,7 +85,7 @@ public class S_Jetpack : MonoBehaviour
         }
         else
         {
-            Vector3 forceToApply = (forwardT.forward * _jetpackForce)/2 + (forwardT.up * _jetpackUpwardForce)/2;
+            Vector3 forceToApply = (forwardT.forward * _jetpackForce)/_dividePer + (forwardT.up * _jetpackUpwardForce)/ _dividePer;
             saveForceToApplyOnGround = forceToApply;
         }
 
