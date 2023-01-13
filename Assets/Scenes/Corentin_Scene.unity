@@ -1702,7 +1702,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 294.5}
+  m_AnchoredPosition: {x: 0, y: -70}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &100305250
@@ -2582,11 +2582,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5614592112766039656, guid: fbe0838dcaccfc54abc5819e210d6de9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 489
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5614592112766039656, guid: fbe0838dcaccfc54abc5819e210d6de9, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 789
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5614592112766039656, guid: fbe0838dcaccfc54abc5819e210d6de9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7279,7 +7279,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28994
+  m_Name: pb_Mesh62364
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8048,7 +8048,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29022
+  m_Name: pb_Mesh62388
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10232,10 +10232,10 @@ RectTransform:
   m_Father: {fileID: 1958513822}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1263366935
 GameObject:
@@ -11539,7 +11539,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28634
+  m_Name: pb_Mesh62116
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12911,13 +12911,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1634000987}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6c7fa4e429645f48892becf9f9d1afe, type: 3}
+  m_Script: {fileID: 11500000, guid: a7c86343046d28847bc2d8d8165f6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _pauseMenuHUD: {fileID: 5682341518981146443}
   _startGameHUD: {fileID: 1262713515}
-  _pauseHUD: {fileID: 7361626985214262984}
-  _settingsHUD: {fileID: 7361626985902440884}
+  _pauseInterface: {fileID: 7361626985214262984}
+  _settingsInterface: {fileID: 7361626985902440884}
   _player: {fileID: 1818189853}
 --- !u!4 &1701313564 stripped
 Transform:
@@ -15302,7 +15302,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
@@ -15649,7 +15649,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: ResumeGame
         m_Mode: 1
         m_Arguments:
@@ -15840,7 +15840,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
@@ -16265,7 +16265,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: MainMenu
         m_Mode: 1
         m_Arguments:
@@ -17654,7 +17654,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: ChangePlayerPos
         m_Mode: 2
         m_Arguments:
@@ -18707,7 +18707,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: ChangePlayerPos
         m_Mode: 2
         m_Arguments:
@@ -19421,7 +19421,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: ChangePlayerPos
         m_Mode: 2
         m_Arguments:
@@ -20282,7 +20282,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: ChangePlayerPos
         m_Mode: 2
         m_Arguments:
@@ -20951,7 +20951,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: ChangePlayerPos
         m_Mode: 2
         m_Arguments:
@@ -21423,7 +21423,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: ChangePlayerPos
         m_Mode: 2
         m_Arguments:
@@ -21633,7 +21633,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: ChangePlayerPos
         m_Mode: 2
         m_Arguments:
@@ -21902,7 +21902,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1634000991}
-        m_TargetAssemblyTypeName: S_PauseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_PauseMenuV2, Assembly-CSharp
         m_MethodName: ChangePlayerPos
         m_Mode: 2
         m_Arguments:

@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class S_PauseMenu: MonoBehaviour
+public class S_PauseMenuV2 : MonoBehaviour
 {
-    public GameObject _pauseMenu;
+
+
+    [SerializeField] private GameObject _pauseMenuHUD;
+    [SerializeField] private GameObject _startGameHUD;
+
+    [SerializeField] private GameObject _pauseInterface;
+    [SerializeField] private GameObject _settingsInterface;
+
     public static bool _isPaused;
     private bool _ischoose;
     [SerializeField]
@@ -13,7 +20,10 @@ public class S_PauseMenu: MonoBehaviour
     void Start()
     {
 
-        _pauseMenu.SetActive(false);
+        _pauseMenuHUD.SetActive(false);
+
+        ResetPauseHUD();
+
         S_Debugger.AddButton("Quit", QuitGame);
 
     }
@@ -38,7 +48,10 @@ public class S_PauseMenu: MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        _pauseMenu.SetActive(true);
+
+        _pauseMenuHUD.SetActive(true);
+        _startGameHUD.SetActive(false);
+
         Time.timeScale = 0f;
         //AudioListener = false;
         _isPaused = true;
@@ -49,12 +62,21 @@ public class S_PauseMenu: MonoBehaviour
         if (!_ischoose)
         {
             StartCoroutine(waitcastchoose());
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            _pauseMenu.SetActive(false);
+
+            _pauseMenuHUD.SetActive(false);
+            _startGameHUD.SetActive(true);
+
+            ResetPauseHUD();
+
+
             Time.timeScale = 1f;
             //AudioListener = true;
             _isPaused = false;
+
+
 
         }
 
@@ -113,4 +135,11 @@ public class S_PauseMenu: MonoBehaviour
         _player.transform.position = newPos.position;
     }
 
+    public void ResetPauseHUD()
+    {
+        _pauseInterface.SetActive(true);
+        _settingsInterface.SetActive(false);
     }
+
+
+}
