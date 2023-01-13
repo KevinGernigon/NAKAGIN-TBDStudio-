@@ -6,7 +6,7 @@ public class S_PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     private float _moveSpeed;
-    [SerializeField] private float _sprintSpeed;
+    //[SerializeField] private float _sprintSpeed;
     [SerializeField] private float _walkSpeed;
     [SerializeField] private float _slideSpeed;
     [SerializeField] private float _wallRunSpeed;
@@ -52,6 +52,8 @@ public class S_PlayerMovement : MonoBehaviour
 
     [Header("Upgrade values")]
     private float _upgradeSpeedValue;
+    private float _upgradeDashSpeed;
+    public bool _ReachUpgradeBool;
 
     [Header("References")]
     [SerializeField] private S_Climbing ClimbingScript;
@@ -121,11 +123,19 @@ public class S_PlayerMovement : MonoBehaviour
         {
             rb.drag = 0;
         }
+
+        if (_ReachUpgradeBool == false)
+        {
+            _dashSpeed = 25;
+            _upgradeSpeedValue = 1;
+        }
     }
 
     private void FixedUpdate()
     {
         MovingPlayer();
+
+        
     }
 
     private void InputCommand()
@@ -191,7 +201,7 @@ public class S_PlayerMovement : MonoBehaviour
             }
             else
             {
-                _desiredMoveSpeed = _sprintSpeed;
+                _desiredMoveSpeed = _walkSpeed;
             }
         }
         //Mode - Crouch 
@@ -201,11 +211,11 @@ public class S_PlayerMovement : MonoBehaviour
             _desiredMoveSpeed = _crouchSpeed;
         }
         //Mode - Sprint
-        else if (_isGrounded && Input.GetKey(_sprintKey) && !_isWallRunning)
+        /*else if (_isGrounded && Input.GetKey(_sprintKey) && !_isWallRunning)
         {
             state = MovementState.sprinting;
             _desiredMoveSpeed = _sprintSpeed;
-        }
+        }*/
         //Mode - Walk
         else if (_isGrounded)
         {
@@ -370,25 +380,20 @@ public class S_PlayerMovement : MonoBehaviour
 
     public void SpeedValueUpgrade()
     {
-        bool _ReachUpgradeBool;
-
         _ReachUpgradeBool = true;
 
         if(_ReachUpgradeBool)
         {
-            StartCoroutine(upgradeSpeed());
-            _ReachUpgradeBool = false;
+            _upgradeSpeedValue += 9;
+            _dashSpeed += 15;
+            StartCoroutine(upgradeSpeed());  
         }       
     }
 
     IEnumerator upgradeSpeed()
     {
-        Debug.Log("Start boost");
-        _upgradeSpeedValue += 9;
-        _dashSpeed += 15;
         yield return new WaitForSeconds(2f);
-        _dashSpeed -= 15;
-        _upgradeSpeedValue -= 9;
-        Debug.Log("End boost");
+        _ReachUpgradeBool = false;
+        Debug.Log(_ReachUpgradeBool);
     }
 }

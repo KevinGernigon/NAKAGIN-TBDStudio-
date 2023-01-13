@@ -10,8 +10,17 @@ public class S_TriggerBattery : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
-        ScriptBatteryManager.GetOneBattery();
+        if((ScriptBatteryManager._nbrBattery >= ScriptBatteryManager._nbrMaxBattery) && !ScriptBatteryManager._overdrive)
+        {
+            Destroy(gameObject);
+            ScriptBatteryManager.GetOneBattery();
+        }
+        if((ScriptBatteryManager._nbrBattery < ScriptBatteryManager._nbrMaxBattery) && !ScriptBatteryManager._overdrive)
+        {
+            Destroy(gameObject);
+            ScriptBatteryManager.GetOneBattery();
+        }
+       
     }
 }
 

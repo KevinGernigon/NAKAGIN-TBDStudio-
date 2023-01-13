@@ -41,7 +41,9 @@ public class S_Dash : MonoBehaviour
     private void Update()
     {
         if (Input.GetButtonDown("Dash"))
+        {
             DashFunction();
+        }
 
         if (_dashCdTimer > 0)
             _dashCdTimer -= Time.deltaTime;
@@ -86,7 +88,7 @@ public class S_Dash : MonoBehaviour
     private void ResetDash()
     {
         _pm._isDashing = false;
-
+        _pm._ReachUpgradeBool = false;
         if (_isDisablingGravity)
         {
             _rb.useGravity = true;
