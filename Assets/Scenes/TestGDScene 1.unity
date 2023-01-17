@@ -5331,6 +5331,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 75311097}
     - target: {fileID: 87840223980359186, guid: c903aa710c688e24b91c8321ab63d5f6, type: 3}
+      propertyPath: _fov
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 87840223980359186, guid: c903aa710c688e24b91c8321ab63d5f6, type: 3}
       propertyPath: _sensX
       value: 100
       objectReference: {fileID: 0}
