@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class S_PauseMenu : MonoBehaviour
+public class S_PauseMenu: MonoBehaviour
 {
-
     public GameObject _pauseMenu;
     public static bool _isPaused;
     private bool _ischoose;
@@ -22,9 +21,9 @@ public class S_PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("MenuPause"))
+        if (Input.GetButtonDown("MenuPause"))
         {
-            if(_isPaused)
+            if (_isPaused)
             {
                 ResumeGame();
             }
@@ -58,7 +57,7 @@ public class S_PauseMenu : MonoBehaviour
             _isPaused = false;
 
         }
-       
+
     }
 
     public void RestartLevel()
@@ -79,7 +78,7 @@ public class S_PauseMenu : MonoBehaviour
                 SceneManager.LoadScene(_scene.name);
             }
         }
-        
+
     }
 
     public void MainMenu()
@@ -114,4 +113,4 @@ public class S_PauseMenu : MonoBehaviour
         _player.transform.position = newPos.position;
     }
 
-}
+    }

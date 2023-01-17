@@ -290,7 +290,7 @@ public class S_WallRunning : MonoBehaviour
         rb.AddForce(forceToApply, ForceMode.Impulse);
 
         RememberLastWall();
-
+        
         StopWallRun();
     }
 }

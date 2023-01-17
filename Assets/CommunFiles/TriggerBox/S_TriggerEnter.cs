@@ -8,6 +8,5 @@ public class S_TriggerEnter : MonoBehaviour
     public void OnTriggerEnter()
     {
         _onTriggerEnter.Invoke();
-
     }
 }
