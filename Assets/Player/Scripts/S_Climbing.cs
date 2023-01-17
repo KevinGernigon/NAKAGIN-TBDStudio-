@@ -140,7 +140,8 @@ public class S_Climbing : MonoBehaviour
     {
         _isClimbing = false;
         pm._isClimbing = false;
-        rb.AddForce(Vector3.down * _counterClimbPropulsion, ForceMode.Impulse);
+        StartCoroutine(counterJumpAdjustment());
+        
     }
     private void StopClimbingByTime()
     {
@@ -159,5 +160,11 @@ public class S_Climbing : MonoBehaviour
         rb.AddForce(forceToApply, ForceMode.Impulse);
 
         _climbJumpsLeft--;
+    }
+
+    IEnumerator counterJumpAdjustment()
+    {
+        yield return new WaitForSeconds(0.05f);
+        rb.AddForce(Vector3.down * _counterClimbPropulsion, ForceMode.Impulse);
     }
 }
