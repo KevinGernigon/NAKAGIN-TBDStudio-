@@ -9,7 +9,8 @@ public class S_Timer : MonoBehaviour
     [SerializeField]
     private TMP_Text _textTimer;
 
-    private float _timeRef = 0f;
+    private float _timeReflevel1 = 0f;
+    private float _timeReflevel2 = 0f;
 
     /*private float _bestTime = 1000f ;
     private float _timeBattlehours, _timeBattleminutes, _timeBattleseconds, _timeBattlemilliseconds;*/
@@ -17,7 +18,8 @@ public class S_Timer : MonoBehaviour
 
     public float _hours, _minutes, _seconds, _milliseconds;
     public float _timerTime;
-    private float _startTime, _stopTime;
+    
+    public float _startTime, _stopTime;
 
     private bool _timerPlay = false;
 
@@ -30,7 +32,7 @@ public class S_Timer : MonoBehaviour
     private void Update()
     {
 
-        _timerTime = _stopTime + (Time.time - _startTime);
+        _timerTime = _stopTime + (Time.time) -(_startTime);
 
         _hours = (int)(_timerTime / 3600f);
         _minutes = (int)(_timerTime / 60f) % 60;
@@ -125,10 +127,11 @@ public class S_Timer : MonoBehaviour
 
     }
 
-    public void SetTimerRef(float TimerBattle)
+    public void SetTimerRef(float TimerLevel1, float TimerLevel2)
     {
 
-        _timeRef = TimerBattle;
+        _timeReflevel1 = TimerLevel1;
+        _timeReflevel2 = TimerLevel2;
 
         /*
         _timeBattlehours = (int)(_timeRef / 3600f);
