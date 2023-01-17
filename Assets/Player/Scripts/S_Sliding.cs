@@ -12,7 +12,7 @@ public class S_Sliding : MonoBehaviour
     private Transform _playerObj;
 
     private Rigidbody rb;
-    private S_PlayerMovement pm;
+    private S_PlayerMovement _pm;
 
     [Header("Sliding")]
     [SerializeField]
@@ -36,7 +36,7 @@ public class S_Sliding : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        pm = GetComponent<S_PlayerMovement>();
+        _pm = GetComponent<S_PlayerMovement>();
 
         _startYScale = _playerObj.localScale.y;
     }
@@ -51,15 +51,16 @@ public class S_Sliding : MonoBehaviour
             StartSlide();
         }
 
-        if(Input.GetKeyUp(_slideKey) && pm._isSliding)
+        if(Input.GetKeyUp(_slideKey) && _pm._isSliding)
         {
             StopSlide();
+            _pm._ReachUpgradeBool = false;
         }
     }
 
     private void FixedUpdate()
     {
-        if (pm._isSliding)
+        if (_pm._isSliding)
         {
             SlidingMovement();
         }
@@ -67,9 +68,9 @@ public class S_Sliding : MonoBehaviour
 
         private void StartSlide()
     {
-        if (pm._isGrounded == true)
+        if (_pm._isGrounded == true)
         {
-            pm._isSliding = true;
+            _pm._isSliding = true;
             _playerObj.localScale = new Vector3(_playerObj.localScale.x, _slideYScale, _playerObj.localScale.z);
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
@@ -77,7 +78,7 @@ public class S_Sliding : MonoBehaviour
         }
         else
         {
-            pm._isSliding = false;
+            _pm._isSliding = false;
         }
 
         
@@ -88,7 +89,7 @@ public class S_Sliding : MonoBehaviour
         Vector3 _inputDirection = _orientation.forward * _verticalInput + _orientation.right * _horizontalInput;
 
         //sliding normal 
-        if (!pm.OnSlope() || rb.velocity.y > -0.1f)
+        if (!_pm.OnSlope() || rb.velocity.y > -0.1f)
         {
             rb.AddForce(_inputDirection.normalized * _slideForce, ForceMode.Force);
             _slideTimer -= Time.deltaTime;
@@ -97,7 +98,7 @@ public class S_Sliding : MonoBehaviour
         //sliding slope 
         else
         {
-            rb.AddForce(pm.GetSlopeMoveDirection(_inputDirection) * _slideForce, ForceMode.Force);
+            rb.AddForce(_pm.GetSlopeMoveDirection(_inputDirection) * _slideForce, ForceMode.Force);
         }
 
         if (_slideTimer <= 0)
@@ -108,7 +109,7 @@ public class S_Sliding : MonoBehaviour
 
     private void StopSlide()
     {
-        pm._isSliding = false;
+        _pm._isSliding = false;
 
         _playerObj.localScale = new Vector3(_playerObj.localScale.x, _startYScale, _playerObj.localScale.z);
     }
