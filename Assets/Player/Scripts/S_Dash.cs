@@ -9,6 +9,7 @@ public class S_Dash : MonoBehaviour
     public Transform playerCam;
     private Rigidbody _rb;
     private S_PlayerMovement _pm;
+    private S_GrappinV2 _grappinScript;
 
     [Header("Dashing")]
     [SerializeField] private float _dashForce;
@@ -52,6 +53,8 @@ public class S_Dash : MonoBehaviour
     private void DashFunction()
     {
         if (_dashCdTimer > 0) return;
+        if (_pm._isFreezing) return;
+
         else _dashCdTimer = _dashCd;
 
         _pm._isDashing = true;
@@ -69,7 +72,11 @@ public class S_Dash : MonoBehaviour
         if (_isDisablingGravity)
                _rb.useGravity = false;
 
-        delayedForceToApply = forceToApply;
+        if(!_pm._isGrappleActive)
+            delayedForceToApply = forceToApply;
+        else
+            delayedForceToApply = forceToApply/2;
+
         Invoke(nameof(DelayedDashForce), 0.025f);
 
         Invoke(nameof(ResetDash), _dashDuration);
@@ -83,12 +90,14 @@ public class S_Dash : MonoBehaviour
             _rb.velocity = Vector3.zero;
         }
         _rb.AddForce(delayedForceToApply, ForceMode.Impulse);
+
     }
 
     private void ResetDash()
     {
         _pm._isDashing = false;
         _pm._ReachUpgradeBool = false;
+
         if (_isDisablingGravity)
         {
             _rb.useGravity = true;

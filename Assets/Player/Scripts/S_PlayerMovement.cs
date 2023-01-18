@@ -50,6 +50,8 @@ public class S_PlayerMovement : MonoBehaviour
     private RaycastHit _slopeHit;
     private bool _exitingSlope;
 
+    [Header("Grappling")]
+    [SerializeField] private float _wantedSpeedGrappling = 2;
     [Header("Upgrade values")]
     private float _upgradeSpeedValue;
     private float _upgradeDashSpeed;
@@ -75,6 +77,7 @@ public class S_PlayerMovement : MonoBehaviour
 
     public enum MovementState
     {
+        freeze,
         walking,
         crouching,
         sprinting,
@@ -90,12 +93,18 @@ public class S_PlayerMovement : MonoBehaviour
     public bool _isClimbing;
     public bool _isDashing;
     public bool _isReachUpgrade;
+    public bool _isGrappling;
+    public bool _isFreezing;
+    public bool _isGrappleActive;
+    public bool _ResetDashSpeed;
+    private bool _isEnableMovementOnNextTouch;
+    private float _saveWalkSpeed;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         _readyToJump = true;
-
+        _saveWalkSpeed = _walkSpeed;
         _startYScale = transform.localScale.y;
         _upgradeSpeedValue = 1;
     }
@@ -115,7 +124,7 @@ public class S_PlayerMovement : MonoBehaviour
         }
 
         //handle drag
-        if (state == MovementState.walking || state == MovementState.sprinting || state == MovementState.crouching)
+        if (state == MovementState.walking || state == MovementState.sprinting || state == MovementState.crouching && !_isGrappleActive)
         {
             rb.drag = _groundDrag;
         }
@@ -134,8 +143,6 @@ public class S_PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         MovingPlayer();
-
-        
     }
 
     private void InputCommand()
@@ -169,8 +176,15 @@ public class S_PlayerMovement : MonoBehaviour
 
     private void StateHandler()
     {
+        //Mode - Grappin
+        if (_isFreezing)
+        {
+            state = MovementState.freeze;
+            //_moveSpeed = 0;
+            //rb.velocity = Vector3.zero;
+        }
         //Mode - Dashing
-        if (_isDashing)
+        else if (_isDashing)
         {
             state = MovementState.dashing;
             _desiredMoveSpeed = _dashSpeed;
@@ -290,6 +304,8 @@ public class S_PlayerMovement : MonoBehaviour
 
     private void MovingPlayer()
     {
+        if (_isGrappleActive) return;
+
         if (state == MovementState.dashing) return;
         if (ClimbingScript._isExitingWall) return;
         //calculate movement direction 
@@ -324,6 +340,8 @@ public class S_PlayerMovement : MonoBehaviour
 
     private void SpeedControl()
     {
+        if (_isGrappleActive) return;
+
         //limiting speed on slope
         if (OnSlope() && !_exitingSlope) 
         {
@@ -362,6 +380,38 @@ public class S_PlayerMovement : MonoBehaviour
         _exitingSlope = false;
     }
 
+    public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
+    {
+        _isGrappleActive = true;
+        velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+        //rb.velocity = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+        Invoke(nameof(SetVelocity), 0.1f);
+
+        Invoke(nameof(ResetRestrictions), 3f);
+    }
+
+    private Vector3 velocityToSet;
+    private void SetVelocity()
+    {
+        _isEnableMovementOnNextTouch = true;
+        rb.velocity = velocityToSet;
+    }
+    public void ResetRestrictions()
+    {
+        _isGrappleActive = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (_isEnableMovementOnNextTouch)
+        {
+            _isEnableMovementOnNextTouch = false;
+            ResetRestrictions();
+
+            GetComponent<S_GrappinV2>().StopGrapple();
+        }
+    }
+
     public bool OnSlope()
     {
         if(Physics.Raycast(transform.position, Vector3.down, out _slopeHit, _playerHeight * 0.5f  + 0.3f))
@@ -376,6 +426,17 @@ public class S_PlayerMovement : MonoBehaviour
     public Vector3 GetSlopeMoveDirection(Vector3 direction)
     {
         return Vector3.ProjectOnPlane(direction, _slopeHit.normal).normalized;
+    }
+    public Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
+    {
+        float gravity = Physics.gravity.y;
+        float displacementY = endPoint.y - startPoint.y;
+        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * trajectoryHeight * gravity);
+        Vector3 velocityXZ = (displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight / gravity) + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity))) * _wantedSpeedGrappling;
+
+        return velocityXZ + velocityY;
     }
 
     public void SpeedValueUpgrade()
