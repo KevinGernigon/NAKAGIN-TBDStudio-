@@ -5,22 +5,25 @@ using UnityEngine;
 public class S_CloseDoor : MonoBehaviour
 {
 
-   
+
 
 
     [Header("References")]
     [SerializeField] private S_InfoScore ScriptInfoScore;
     [SerializeField] private S_Timer ScriptTimer;
 
-    [Header ("Sliding Door Configs")]
+    [Header("Sliding Door Configs")]
 
     [SerializeField] private Transform _doorLvl1;
     [SerializeField] private Transform _doorLvl2;
 
     [SerializeField] private Vector3 _slideDirection = Vector3.down;
+
+    [Header("Metrix")]
     [SerializeField] private float _slideAmount = 20f;
     [SerializeField] private float _timeAfterClose = 10f;
-    [SerializeField] private float _speed;
+    [SerializeField] private float _speedClosing;
+    [SerializeField] private float _speedOpening = 0.9f;
 
     private Vector3 _startPositionDoorLvl1;
     private Vector3 _startPositionDoorLvl2;
@@ -30,10 +33,10 @@ public class S_CloseDoor : MonoBehaviour
 
     private bool _DoorMooving = false;
 
-    
+
     private Coroutine _animationCoroutine;
 
-    
+
 
     private void Awake()
     {
@@ -45,7 +48,7 @@ public class S_CloseDoor : MonoBehaviour
 
     void Start()
     {
-       
+
 
     }
 
@@ -53,26 +56,22 @@ public class S_CloseDoor : MonoBehaviour
     void Update()
     {
 
-        if(ScriptInfoScore._runStart && !_DoorIsOpen && !_DoorMooving)
+        if (ScriptInfoScore._runStart && !_DoorIsOpen && !_DoorMooving)
         {
             OpenDoorLvl1();
         }
-        
-        if( ScriptInfoScore._runStart && ( ScriptTimer._timerTime > ScriptInfoScore._level1Time - _timeAfterClose) && !_DoorMooving)
+
+        if (ScriptInfoScore._runStart && (ScriptTimer._timerTime > ScriptInfoScore._level1Time - _timeAfterClose) && !_DoorMooving)
         {
 
-            ClosedDoorLvl1();
-            
+            ClosedDoorLvl1(_speedClosing);
+
         }
 
         if (ScriptInfoScore._Lvl2Win && !_Doorlvl2Open)
         {
             OpenDoorLvl2();
         }
-        
-
-
-
 
     }
 
@@ -83,7 +82,7 @@ public class S_CloseDoor : MonoBehaviour
         //Debug.Log("Open Door");
         if (!_DoorIsOpen)
         {
-            if(_animationCoroutine != null)
+            if (_animationCoroutine != null)
             {
                 StopCoroutine(_animationCoroutine);
             }
@@ -98,23 +97,23 @@ public class S_CloseDoor : MonoBehaviour
     {
         Vector3 endPosition = _startPositionDoorLvl1 + _slideAmount * _slideDirection;
         Vector3 startPosition = _doorLvl1.transform.position;
-        
+
         _DoorIsOpen = true;
 
         float time = 0;
-       
 
-        while(time < 1)
+
+        while (time < 1)
         {
             _doorLvl1.transform.position = Vector3.Lerp(startPosition, endPosition, time);
             yield return null;
-            time += Time.deltaTime * _speed; 
+            time += Time.deltaTime * _speedOpening;
         }
     }
 
 
 
-    public void ClosedDoorLvl1()
+    public void ClosedDoorLvl1(float Speed)
     {
         //Debug.Log("Close Door");
         if (_DoorIsOpen)
@@ -124,13 +123,13 @@ public class S_CloseDoor : MonoBehaviour
                 StopCoroutine(_animationCoroutine);
             }
 
-            _animationCoroutine = StartCoroutine(DoSlidingClose());
+            _animationCoroutine = StartCoroutine(DoSlidingClose(Speed));
 
         }
 
     }
 
-    private IEnumerator DoSlidingClose()
+    private IEnumerator DoSlidingClose(float Speed)
     {
         Vector3 endPosition = _startPositionDoorLvl1;
         Vector3 startPosition = _doorLvl1.transform.position;
@@ -145,8 +144,14 @@ public class S_CloseDoor : MonoBehaviour
         {
 
             _doorLvl1.transform.position = Vector3.Lerp(startPosition, endPosition, time);
+
+            if (!ScriptInfoScore._runStart)
+            {
+                Speed = _speedOpening;
+            }
+
             yield return null;
-            time += Time.deltaTime * _speed;
+            time += Time.deltaTime * Speed;
         }
 
         /* envoye un signal lorsque la porte est fermer pour tp le joueur si encore en run */
@@ -158,11 +163,11 @@ public class S_CloseDoor : MonoBehaviour
     public void ResetRun()
     {
         ScriptInfoScore._runStart = false;
-        if(_DoorIsOpen)
+        if (_DoorIsOpen)
         {
-            ClosedDoorLvl1();
+            ClosedDoorLvl1(_speedOpening);
         }
-        
+
     }
 
     public void OpenDoorLvl2()
@@ -184,7 +189,7 @@ public class S_CloseDoor : MonoBehaviour
         {
             _doorLvl2.transform.position = Vector3.Lerp(startPosition, endPosition, time);
             yield return null;
-            time += Time.deltaTime * 0.9f;
+            time += Time.deltaTime * _speedOpening;
         }
     }
 
