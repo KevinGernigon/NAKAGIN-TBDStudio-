@@ -105,6 +105,8 @@ public class S_PlayerMovement : MonoBehaviour
     public bool _ResetDashSpeed;
     private bool _isEnableMovementOnNextTouch;
     private float _saveWalkSpeed;
+    private bool canJumpLedge;
+    private float _timerJump;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -119,7 +121,8 @@ public class S_PlayerMovement : MonoBehaviour
     {
         //Ground Check
         _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + _valueRaycast, _whatIsGround);
-        
+        //_isGrounded = Physics.BoxCast(transform.position, Vector3.one, Vector3.down, Quaternion.identity, _playerHeight * 0.5f + _valueRaycast, _whatIsGround);
+
         InputCommand();
         SpeedControl();
         StateHandler();
@@ -149,17 +152,31 @@ public class S_PlayerMovement : MonoBehaviour
         {
             _desiredMoveSpeed = _airSpeed;
         }
-        
+
     }
 
     private void FixedUpdate()
     {
         MovingPlayer();
-        if(_lastState != MovementState.dashing)
+        
+        if (_lastState != MovementState.dashing)
         {
-            rb.velocity += Vector3.up * Physics.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
+            rb.velocity += Vector3.up * Physics.gravity.y * _fallMultiplier * Time.deltaTime;
         }
 
+        if (!_isGrounded)
+        {
+            _timerJump += Time.deltaTime;
+            Debug.Log(_readyToJump);
+            if (_timerJump < _jumpCooldown && _readyToJump)
+            {
+                canJumpLedge = true;
+            }
+            else
+                canJumpLedge = false;
+
+        }
+        else _timerJump = 0f;
     }
 
     private void InputCommand()
@@ -168,13 +185,14 @@ public class S_PlayerMovement : MonoBehaviour
         _verticalInput = Input.GetAxisRaw("Vertical");
 
         //when to jump
-        if (Input.GetButtonDown("Jump") && _readyToJump && _isGrounded)
+        if (Input.GetButtonDown("Jump") && _readyToJump && _isGrounded || (Input.GetButtonDown("Jump") && canJumpLedge))
         {
             _readyToJump = false;
-
             Jump();
-
+            canJumpLedge = false;
             Invoke(nameof(ResetJump), _jumpCooldown);
+
+            
         }
             //When crouch
 
@@ -349,7 +367,6 @@ public class S_PlayerMovement : MonoBehaviour
         else if (!_isGrounded)
         {
             rb.AddForce(_moveDirection.normalized * _moveSpeed * _AerialSpeed * _airMultiplier * _upgradeSpeedValue, ForceMode.Force);
-
         }
 
         if (!_isWallRunning)
