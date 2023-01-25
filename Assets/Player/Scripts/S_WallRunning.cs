@@ -246,9 +246,7 @@ public class S_WallRunning : MonoBehaviour
         //push to wall force
         if (!_isExitingWall && !(_isWallLeft && _horizontalInput > 0) && !(_isWallRight && _horizontalInput < 0))
         {
-
-             rb.AddForce(-_wallNormal * 100, ForceMode.Force);
-            
+            rb.AddForce(-_wallNormal * 100, ForceMode.Force);
         }
 
         if (_isUsingGravity)
@@ -281,7 +279,6 @@ public class S_WallRunning : MonoBehaviour
 
     private void WallJump()
     {
-        S_Debugger.print("J'ai WallJumpé");
         bool firstJump = true;
         //enter exiting wall state
 
@@ -300,7 +297,6 @@ public class S_WallRunning : MonoBehaviour
         //add force
 
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
         rb.AddForce(forceToApply, ForceMode.Impulse);
 
         RememberLastWall();
