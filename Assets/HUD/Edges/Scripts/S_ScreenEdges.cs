@@ -55,7 +55,7 @@ public class S_ScreenEdges : MonoBehaviour
                 }
 
             }
-            _screenEdges.color = new Color(_screenEdges.color.r, _screenEdges.color.b, _screenEdges.color.g, (2 / (1.5f * Vector3.Distance(_player.transform.position, _storeCollider.transform.position)) * 5));
+            _screenEdges.color = new Color(_screenEdges.color.r, _screenEdges.color.b, _screenEdges.color.g, (2 / (1.5f * Vector3.Distance(_player.transform.position, _storeCollider.transform.position)) * 3));
             if (_screenEdges.color.a < 0.05f)
             {
                 _screenEdges.color = new Color(_screenEdges.color.r, _screenEdges.color.b, _screenEdges.color.g, 0.0f);
