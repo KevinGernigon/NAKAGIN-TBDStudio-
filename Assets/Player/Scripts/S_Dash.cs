@@ -75,7 +75,7 @@ public class S_Dash : MonoBehaviour
         if(!_pm._isGrappleActive)
             delayedForceToApply = forceToApply;
         else
-            delayedForceToApply = forceToApply/2;
+            delayedForceToApply = forceToApply/3;
 
         Invoke(nameof(DelayedDashForce), 0.025f);
 

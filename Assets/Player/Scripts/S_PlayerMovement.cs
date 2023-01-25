@@ -13,16 +13,20 @@ public class S_PlayerMovement : MonoBehaviour
     [SerializeField] private float _climbUpSpeed;
     [SerializeField] private float _dashSpeed;
     [SerializeField] private float _dashSpeedChangeFactor;
+    [SerializeField] private float _AerialSpeed;
     private float _desiredMoveSpeed;
     private float _lastDesiredMoveSpeed;
     private float _speedChangeFactor;
-    
+    public float _fallMultiplier;
+
     private MovementState _lastState;
     private bool _isKeepingMomentum;
 
     private float _speedIncreaseMultiplier;
     private float _slopeIncreaseMultiplier;
     [SerializeField] private float _groundDrag;
+    [SerializeField] private float _airSpeed;
+
 
     [Header("Jumping")]
     [SerializeField] private float _jumpForce;
@@ -51,7 +55,8 @@ public class S_PlayerMovement : MonoBehaviour
     private bool _exitingSlope;
 
     [Header("Grappling")]
-    [SerializeField] private float _wantedSpeedGrappling = 2;
+    [SerializeField] public float _wantedSpeedGrappling = 2;
+    [SerializeField] public float _wantedHeightGrappling = 2;
     [Header("Upgrade values")]
     private float _upgradeSpeedValue;
     private float _upgradeDashSpeed;
@@ -60,6 +65,7 @@ public class S_PlayerMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] private S_Climbing ClimbingScript;
     [SerializeField] private S_Dash ScriptDash;
+    [SerializeField] private S_WallRunning ScriptWallRun;
     [SerializeField] private Transform _orientation;
 
 
@@ -138,11 +144,22 @@ public class S_PlayerMovement : MonoBehaviour
             _dashSpeed = 25;
             _upgradeSpeedValue = 1;
         }
+
+        if (state == MovementState.air)
+        {
+            _desiredMoveSpeed = _airSpeed;
+        }
+        
     }
 
     private void FixedUpdate()
     {
         MovingPlayer();
+        if(_lastState != MovementState.dashing)
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
+        }
+
     }
 
     private void InputCommand()
@@ -177,14 +194,14 @@ public class S_PlayerMovement : MonoBehaviour
     private void StateHandler()
     {
         //Mode - Grappin
-        if (_isFreezing)
+        /*if (_isFreezing)
         {
             state = MovementState.freeze;
             //_moveSpeed = 0;
             //rb.velocity = Vector3.zero;
-        }
+        }*/
         //Mode - Dashing
-        else if (_isDashing)
+        if (_isDashing)
         {
             state = MovementState.dashing;
             _desiredMoveSpeed = _dashSpeed;
@@ -215,7 +232,7 @@ public class S_PlayerMovement : MonoBehaviour
             }
             else
             {
-                _desiredMoveSpeed = _walkSpeed;
+                _desiredMoveSpeed = _walkSpeed * GetComponent<S_Sliding>()._slideForce;
             }
         }
         //Mode - Crouch 
@@ -251,6 +268,7 @@ public class S_PlayerMovement : MonoBehaviour
         {
             _moveSpeed = _desiredMoveSpeed;
         }
+
         bool desiredMoveSpeedChanged = _desiredMoveSpeed != _lastDesiredMoveSpeed;
         if (_lastState == MovementState.dashing) _isKeepingMomentum = true;
 
@@ -314,12 +332,13 @@ public class S_PlayerMovement : MonoBehaviour
         //on slope
         if (OnSlope() && !_exitingSlope)
         {
-            rb.AddForce(GetSlopeMoveDirection(_moveDirection) * _moveSpeed * 20f, ForceMode.Force);
-
-            if(rb.velocity.y > 0)
+            rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+            if (rb.velocity.y > 0 && _isSliding)
             {
-                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+                rb.AddForce(GetSlopeMoveDirection(_moveDirection) * _moveSpeed * 20f, ForceMode.Force);
             }
+            else
+                rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _upgradeSpeedValue, ForceMode.Force);
         }
 
         else if (_isGrounded) 
@@ -329,7 +348,8 @@ public class S_PlayerMovement : MonoBehaviour
 
         else if (!_isGrounded)
         {
-            rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier * _upgradeSpeedValue, ForceMode.Force);
+            rb.AddForce(_moveDirection.normalized * _moveSpeed * _AerialSpeed * _airMultiplier * _upgradeSpeedValue, ForceMode.Force);
+
         }
 
         if (!_isWallRunning)
@@ -371,6 +391,7 @@ public class S_PlayerMovement : MonoBehaviour
         //rb.velocity = new Vector3(rb.velocity.x, ??, rb.velocity.z);
 
         rb.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
+
     }
 
     private void ResetJump()
@@ -433,7 +454,7 @@ public class S_PlayerMovement : MonoBehaviour
         float displacementY = endPoint.y - startPoint.y;
         Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
 
-        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * trajectoryHeight * gravity);
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * trajectoryHeight * gravity) * _wantedHeightGrappling;
         Vector3 velocityXZ = (displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight / gravity) + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity))) * _wantedSpeedGrappling;
 
         return velocityXZ + velocityY;
@@ -445,7 +466,7 @@ public class S_PlayerMovement : MonoBehaviour
 
         if(_ReachUpgradeBool)
         {
-            _upgradeSpeedValue += 9;
+            _upgradeSpeedValue += 2.5f;
             _dashSpeed += 15;
             StartCoroutine(upgradeSpeed());  
         }       
@@ -456,5 +477,10 @@ public class S_PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(2f);
         _ReachUpgradeBool = false;
         Debug.Log(_ReachUpgradeBool);
+    }
+    
+    IEnumerator leaveGround()
+    {
+        yield return new WaitForSeconds(0.1f);
     }
 }
