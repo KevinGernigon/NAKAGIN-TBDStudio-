@@ -18,7 +18,7 @@ public class S_JumpPadV2 : MonoBehaviour
             GameObject _bouncer = collision.gameObject;
             Rigidbody _rb = _bouncer.GetComponent<Rigidbody>();
 
-            _rb.AddForce(Vector3.up * _BounceHight);
+            _rb.AddForce(Vector3.up * _BounceHight) ;
             _rb.AddForce(_orientationPlayer.forward * _BounceFront);
 
         }
