@@ -39,6 +39,9 @@ public class S_WallRunning : MonoBehaviour
     public bool _isWallRight;
     [SerializeField] private bool _isWallRemembered;
     [SerializeField] private float _angleValue;
+    [SerializeField] private float _wallRunTimeClimb;
+    [SerializeField] private float _wallRunTimeClimbRef;
+    private bool _isWallRunEnding;
 
     [Header("Exiting")]
     private bool _isExitingWall;
@@ -61,12 +64,24 @@ public class S_WallRunning : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<S_PlayerMovement>();
+        _wallRunTimeClimb = _wallRunTimeClimbRef;
     }
 
     private void Update()
     {
         CheckForWall();
         StateMachine();
+        if(pm._isWallRunning)
+        _wallRunTimeClimb -= Time.deltaTime;
+
+        if(_wallRunTimeClimb <= 0)
+        {
+            _isWallRunEnding = true;
+            WallRunningMovement();
+        }
+
+        if(_isExitingWall)
+            _wallRunTimeClimb = _wallRunTimeClimbRef;
     }
 
     private void FixedUpdate()
@@ -221,13 +236,11 @@ public class S_WallRunning : MonoBehaviour
         rb.AddForce(_wallForward * _wallRunForce, ForceMode.Force);
 
         //upwards/downwards force
-        if (_isUpwardsRunning)
+        if (_isWallRunEnding)
         {
-            rb.velocity = new Vector3(rb.velocity.x, _wallClimbSpeed, rb.velocity.z);
-        }
-        if (_isDownwardsRunning)
-        {
+            _wallRunTimeClimb = _wallRunTimeClimbRef;
             rb.velocity = new Vector3(rb.velocity.x, -_wallClimbSpeed, rb.velocity.z);
+            _isWallRunEnding = false;
         }
 
         //push to wall force
@@ -260,7 +273,8 @@ public class S_WallRunning : MonoBehaviour
     {
         if (other.collider.tag == "Ground")
         {
-            _lastWall = null; 
+            _lastWall = null;
+            _wallRunTimeClimb = _wallRunTimeClimbRef;
         }
     }
 

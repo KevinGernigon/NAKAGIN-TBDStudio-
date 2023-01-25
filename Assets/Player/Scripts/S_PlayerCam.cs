@@ -12,6 +12,8 @@ public class S_PlayerCam : MonoBehaviour
     [Header("References")]
     public S_PlayerMovement pm;
     public S_WallRunning wr;
+    public S_Climbing ClimbingScript;
+    public S_GrappinV2 GrapplingHookScript;
     public Transform _orientation;
     public Transform player;
 
@@ -27,9 +29,12 @@ public class S_PlayerCam : MonoBehaviour
     [SerializeField] private float _wallRunFovTime;
     [SerializeField] [Range(0, 30)] private float _camTiltWR;
     [SerializeField] [Range(0, 30)] private float _camTiltSlide;
+    [SerializeField] [Range(0, 30)] private float _camTiltClimbAchieved;
     [SerializeField] private float _camTiltTime;
     [SerializeField] private float _wallSlideFovTime;
     [SerializeField] private float _wallSlideFov;
+    [SerializeField] private float _grapplingHookFov;
+    [SerializeField] private float _grapplingHookFovTime;
     public bool _isAxisXInverted;
     public bool _isAxisYInverted;
     public bool _isActive;
@@ -53,6 +58,8 @@ public class S_PlayerCam : MonoBehaviour
     {
         CameraTiltWallRunFPS();
         CameraTiltSlide();
+        CameraTiltClimb();
+        CameraFOVGrapplingHook();
 
         if (_isActive)
         {
@@ -111,6 +118,30 @@ public class S_PlayerCam : MonoBehaviour
         {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _wallSlideFovTime * Time.deltaTime);
             tilt = Mathf.Lerp(tilt, 0, _camTiltTime * Time.deltaTime);
+        }
+    }
+    private void CameraTiltClimb()
+    {
+        if (ClimbingScript._isAchievedClimb)
+        {
+            //cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _wallSlideFov, _wallSlideFovTime * Time.deltaTime);
+            tilt = Mathf.Lerp(tilt, _camTiltClimbAchieved, _camTiltTime * Time.deltaTime);
+        }
+        else
+        {
+            //cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _wallSlideFovTime* Time.deltaTime);
+            tilt = Mathf.Lerp(tilt, 0, _camTiltTime * Time.deltaTime);
+        }
+    }
+    private void CameraFOVGrapplingHook()
+    {
+        if (GrapplingHookScript.isIncreaseFOV)
+        {
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _grapplingHookFov, _grapplingHookFovTime * Time.deltaTime);
+        }
+        else
+        {
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _grapplingHookFovTime * Time.deltaTime);
         }
     }
 

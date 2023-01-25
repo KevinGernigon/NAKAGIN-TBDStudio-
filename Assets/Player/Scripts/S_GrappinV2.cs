@@ -25,6 +25,7 @@ public class S_GrappinV2 : MonoBehaviour
 
     [Header("Boolean")]
     public bool _isGrappling;
+    public bool isIncreaseFOV;
 
     public System.Action updateAction;
 
@@ -43,13 +44,14 @@ public class S_GrappinV2 : MonoBehaviour
         if (_grapplingCdTimer > 0)
             _grapplingCdTimer -= Time.deltaTime;
 
-/*        updateAction.Invoke();
-*/
+        //updateAction.Invoke();
+
     }
 
     private void LateUpdate()
     {
         if (_isGrappling)
+            //lr.SetPosition(1000, _grappingTransform.position);
             lr.SetPosition(0, _grappingTransform.position);
     }
     private void StartGrapple()
@@ -74,31 +76,33 @@ public class S_GrappinV2 : MonoBehaviour
 
         lr.enabled = true;
         lr.SetPosition(1, grapplePoint);
-        /*var finalPosion = grapplePoint;
-        SetGraplin(finalPosion);
+        var finalPosion = grapplePoint;
+        /*SetGraplin(finalPosion);
         updateAction = () => SetGraplin(finalPosion);*/
     }
 
 
-    /*private void SetGraplin(Vector3 finalPos)
+/*    private void SetGraplin(Vector3 finalPos)
     {
         float i = 0f;
         lr.positionCount = 1000;
         var tempTime = Time.time;
-        for (int y = 0; y < lr.positionCount; y++)
+        for (int y = 0; y < 1000; y++)
         {
-            var tempPosition = Vector3.Lerp(_grappingTransform.position, finalPos, i);
-            //tempPosition = new Vector3(tempPosition.x, tempPosition.y + Mathf.Cos(10*Time.time*i) * 0.5f , tempPosition.z); 
+            //var tempPosition = Vector3.Lerp(_grappingTransform.position, finalPos, i);
+            var tempPosition = Vector3.Lerp(finalPos, _grappingTransform.position, i);
+            tempPosition = new Vector3(tempPosition.x, tempPosition.y + Mathf.Cos(5*Time.time*i) * 0.1f , tempPosition.z); 
             lr.SetPosition(y, tempPosition);
             i = (float)y / (float)lr.positionCount;
         }
-        lr.SetPosition(lr.positionCount - 1, grapplePoint);
+
+        lr.SetPosition(lr.positionCount - 1, _grappingTransform.position);
 
     }*/
     private void ExecuteGrapple()
     {
         _pm._isFreezing = true;
-
+        isIncreaseFOV = true;
         Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z); //point de départ du personnage
         float grapplePointRelativeYPos = grapplePoint.y - lowestPoint.y;
         float highestPointOnArc = grapplePointRelativeYPos + _overshootYAxis;
@@ -119,6 +123,8 @@ public class S_GrappinV2 : MonoBehaviour
         _grapplingCdTimer = _grapplingCd;
 
         lr.enabled = false;
+
+        isIncreaseFOV = false;
 
     }
 }
