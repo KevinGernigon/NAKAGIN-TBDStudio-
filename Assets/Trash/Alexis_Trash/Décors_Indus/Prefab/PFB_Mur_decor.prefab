@@ -50,7 +50,7 @@ GameObject:
   m_Component:
   - component: {fileID: 236578076848029193}
   m_Layer: 0
-  m_Name: P_Mur_decor
+  m_Name: PFB_Mur_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
