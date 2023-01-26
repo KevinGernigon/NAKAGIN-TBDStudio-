@@ -41,6 +41,8 @@ public class S_Climbing : MonoBehaviour
     public bool _isExitingWall;
     [SerializeField] private float _exitWallTime;
     private float _exitingWallTimer;
+    public bool _isAchievedClimb;
+    [SerializeField] private float _AnimationClimbTime;
 
     private void Update()
     {
@@ -86,7 +88,6 @@ public class S_Climbing : MonoBehaviour
             if (_isClimbing)
             {
                 StopClimbingByReachPoint();
-
             }
 
             if (_exitingWallTimer > 0) _exitingWallTimer -= Time.deltaTime;
@@ -141,7 +142,8 @@ public class S_Climbing : MonoBehaviour
         _isClimbing = false;
         pm._isClimbing = false;
         StartCoroutine(counterJumpAdjustment());
-        
+        _isAchievedClimb = true;  
+        StartCoroutine(EndClimbingAnimation());
     }
     private void StopClimbingByTime()
     {
@@ -151,7 +153,6 @@ public class S_Climbing : MonoBehaviour
 
     private void ClimbJump()
     {
-        S_Debugger.print("J'ai Climb Jumpé");
         _isExitingWall = true;
         _exitingWallTimer = _exitWallTime;
         Vector3 forceToApply = transform.up * _climbJumpUpForce + _frontWallHit.normal * _climbJumpBackForce;
@@ -166,5 +167,10 @@ public class S_Climbing : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
         rb.AddForce(Vector3.down * _counterClimbPropulsion, ForceMode.Impulse);
+    }
+    IEnumerator EndClimbingAnimation()
+    {
+        yield return new WaitForSeconds(_AnimationClimbTime);
+        _isAchievedClimb = false;
     }
 }

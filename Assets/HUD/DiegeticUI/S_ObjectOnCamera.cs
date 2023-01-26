@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class S_ObjectOnCamera : MonoBehaviour
 {
-    [SerializeField] private BoxCollider _triggerUI;
+    [SerializeField] private SphereCollider _triggerUI;
     [SerializeField] private Collider _collider;
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _HUDGrappin;
@@ -13,7 +13,7 @@ public class S_ObjectOnCamera : MonoBehaviour
     [SerializeField] public Transform lookat;
 
     Plane[] cameraFrustum;
-    private bool _seePlayer;
+    //private bool _seePlayer;
     private GameObject _UI;
     private Camera _mainCamera;
     private bool _createdUI;
@@ -28,7 +28,7 @@ public class S_ObjectOnCamera : MonoBehaviour
 
     void Update()
     {
-        CheckWalls();
+        //CheckWalls();
         var bounds = _collider.bounds;
         cameraFrustum = GeometryUtility.CalculateFrustumPlanes(_mainCamera);
         if (GeometryUtility.TestPlanesAABB(cameraFrustum, bounds) && _inRange == true)
@@ -54,7 +54,7 @@ public class S_ObjectOnCamera : MonoBehaviour
         }
     }
 
-    void CheckWalls()
+    /*void CheckWalls()
     {
         var ray = new Ray(_player.transform.position, _collider.transform.position);
         RaycastHit hit;
@@ -72,7 +72,7 @@ public class S_ObjectOnCamera : MonoBehaviour
                 Debug.Log("test3");
             }
         }
-    }
+    }*/
 
     public void InTrigger()
     {

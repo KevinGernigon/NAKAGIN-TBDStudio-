@@ -6,14 +6,21 @@ public class S_Respawn : MonoBehaviour
 {
 
     [SerializeField] private Transform _player;
-    [SerializeField] private Transform _respawnplayer;
+    [SerializeField] private Rigidbody _rbplayer;
+    public Transform _respawnplayer;
+    [SerializeField] private Transform _camera;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             Debug.Log("Respawn");
+
             _player.transform.position = _respawnplayer.transform.position;
+            _rbplayer.velocity = new Vector3(0, 0, 0);
+
+            _camera.GetComponent<S_PlayerCam>().CameraReset();
+
             Physics.SyncTransforms();
         }
     }

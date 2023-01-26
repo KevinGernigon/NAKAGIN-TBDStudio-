@@ -13,8 +13,12 @@ public class S_CheckPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("checkPoint");
-             _respawnCoordonne.transform.position = _respawnCapsule.transform.position ;
-             _respawnCoordonne.transform.position = new Vector3(_respawnCoordonne.transform.position.x,_respawnCoordonne.transform.position.y,_respawnCoordonne.transform.position.z);
+            _respawnCoordonne.transform.position = _respawnCapsule.transform.position;
+            _respawnCoordonne.transform.position = new Vector3(_respawnCoordonne.transform.position.x, _respawnCoordonne.transform.position.y, _respawnCoordonne.transform.position.z);
+
+
+            _respawnCoordonne.transform.eulerAngles = new Vector3(_respawnCapsule.transform.rotation.eulerAngles.x, _respawnCapsule.transform.rotation.eulerAngles.y, _respawnCapsule.transform.rotation.eulerAngles.z);
+            
             Physics.SyncTransforms();
         }
     }

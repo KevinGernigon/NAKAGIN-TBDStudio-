@@ -15,15 +15,13 @@ public class S_Sliding : MonoBehaviour
     private S_PlayerMovement _pm;
 
     [Header("Sliding")]
-    [SerializeField]
-    private float _maxSlideTime;
+    [SerializeField] private float _maxSlideTime;
+    [SerializeField] private float _SlideValue;
 
-    [SerializeField]
-    private float _slideForce;
+    [SerializeField] public float _slideForce;
     private float _slideTimer;
 
-    [SerializeField]
-    private float _slideYScale;
+    [SerializeField] private float _slideYScale;
 
     private float _startYScale;
 
@@ -72,7 +70,7 @@ public class S_Sliding : MonoBehaviour
         {
             _pm._isSliding = true;
             _playerObj.localScale = new Vector3(_playerObj.localScale.x, _slideYScale, _playerObj.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+            rb.AddForce(Vector3.down * _SlideValue, ForceMode.Impulse);
 
             _slideTimer = _maxSlideTime;
         }

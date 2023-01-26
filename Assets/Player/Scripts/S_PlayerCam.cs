@@ -12,8 +12,11 @@ public class S_PlayerCam : MonoBehaviour
     [Header("References")]
     public S_PlayerMovement pm;
     public S_WallRunning wr;
+    public S_Climbing ClimbingScript;
+    public S_GrappinV2 GrapplingHookScript;
     public Transform _orientation;
     public Transform player;
+    public Transform respawnPoint;
 
     float _xRotation;
     float _yRotation;
@@ -27,12 +30,16 @@ public class S_PlayerCam : MonoBehaviour
     [SerializeField] private float _wallRunFovTime;
     [SerializeField] [Range(0, 30)] private float _camTiltWR;
     [SerializeField] [Range(0, 30)] private float _camTiltSlide;
+    [SerializeField] [Range(0, 30)] private float _camTiltClimbAchieved;
     [SerializeField] private float _camTiltTime;
     [SerializeField] private float _wallSlideFovTime;
     [SerializeField] private float _wallSlideFov;
+    [SerializeField] private float _grapplingHookFov;
+    [SerializeField] private float _grapplingHookFovTime;
     public bool _isAxisXInverted;
     public bool _isAxisYInverted;
     public bool _isActive;
+    public bool _isRespawning = false;
 
     public float tilt { get; private set; }
 
@@ -53,6 +60,8 @@ public class S_PlayerCam : MonoBehaviour
     {
         CameraTiltWallRunFPS();
         CameraTiltSlide();
+        CameraTiltClimb();
+        CameraFOVGrapplingHook();
 
         if (_isActive)
         {
@@ -67,12 +76,15 @@ public class S_PlayerCam : MonoBehaviour
             else
                 _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * -_sensY * _sensiSlider.value;
             ////////////////
-            _yRotation += _mouseX;
-            _xRotation -= _mouseY;
-            _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
+            if (!_isRespawning)
+            {
+                _yRotation += _mouseX;
+                _xRotation -= _mouseY;
+                _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
 
-            transform.rotation = Quaternion.Euler(_xRotation, _yRotation, tilt);
-            _orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
+                transform.rotation = Quaternion.Euler(_xRotation, _yRotation, tilt);
+                _orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.H))
@@ -113,6 +125,30 @@ public class S_PlayerCam : MonoBehaviour
             tilt = Mathf.Lerp(tilt, 0, _camTiltTime * Time.deltaTime);
         }
     }
+    private void CameraTiltClimb()
+    {
+        if (ClimbingScript._isAchievedClimb)
+        {
+            //cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _wallSlideFov, _wallSlideFovTime * Time.deltaTime);
+            tilt = Mathf.Lerp(tilt, _camTiltClimbAchieved, _camTiltTime * Time.deltaTime);
+        }
+        else
+        {
+            //cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _wallSlideFovTime* Time.deltaTime);
+            tilt = Mathf.Lerp(tilt, 0, _camTiltTime * Time.deltaTime);
+        }
+    }
+    private void CameraFOVGrapplingHook()
+    {
+        if (GrapplingHookScript.isIncreaseFOV)
+        {
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _grapplingHookFov, _grapplingHookFovTime * Time.deltaTime);
+        }
+        else
+        {
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _grapplingHookFovTime * Time.deltaTime);
+        }
+    }
 
     public void InvertXAxis()
     {
@@ -138,8 +174,10 @@ public class S_PlayerCam : MonoBehaviour
     IEnumerator resetcam()
     {
         _isActive = false;
+        _xRotation = respawnPoint.rotation.eulerAngles.x;
+        _yRotation = respawnPoint.rotation.eulerAngles.y;
         Camera.main.transform.rotation = Quaternion.identity;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.01f);
         _isActive = true;
     }
 }
