@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class S_ObjectOnCamera : MonoBehaviour
 {
-    [SerializeField] private BoxCollider _triggerUI;
+    [SerializeField] private SphereCollider _triggerUI;
     [SerializeField] private Collider _collider;
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _HUDGrappin;
