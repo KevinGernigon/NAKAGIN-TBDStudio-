@@ -172,7 +172,7 @@ public class S_PlayerMovement : MonoBehaviour
         if (!_isGrounded)
         {
             _timerJump += Time.deltaTime;
-            if (_timerJump < _jumpCooldown - 0.00f && _readyToJump)
+            if (_timerJump < _jumpCooldown - 0.01f && _readyToJump)
             {
                 canJumpLedge = true;
             }

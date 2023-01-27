@@ -13,6 +13,7 @@ public class S_RotationPlatformes : MonoBehaviour
     public float _alphaSpeed = 0.001f;
     private bool _isTrigger = false;
     private bool _startMoving = false;
+    private bool _stopSpam = false;
     private Vector3 _initialRotation;
 
     void Start()
@@ -22,14 +23,15 @@ public class S_RotationPlatformes : MonoBehaviour
 
     void Update()
     {
-        if (_startMoving == true)
+        Debug.Log(_alpha);
+        /*if (_startMoving == true)
         {
             
             if (_alpha >= 1)
             {
                 _startMoving = false;
             }
-        }
+        }*/
 
         if (_isTrigger)
         {
@@ -59,33 +61,31 @@ public class S_RotationPlatformes : MonoBehaviour
 
     IEnumerator MovePlatformsRight(GameObject platforms)
     {
-        while (_startMoving == true)
+        while (_startMoving == true && _alpha < 1)
         {
             _centerPlatforms.transform.Rotate(Vector3.right * _degre / Mathf.Round(1 / _alphaSpeed));
             _alpha += _alphaSpeed;
             yield return new WaitForSeconds(0.01f);
         }
-        
+        _startMoving = false;
     }
     IEnumerator MovePlatformsLeft(GameObject platforms)
     {
-        while (_startMoving == true)
+        while (_startMoving == true && _alpha < 1)
         {
             _centerPlatforms.transform.Rotate(Vector3.left * _degre / Mathf.Round(1 / _alphaSpeed));
             _alpha += _alphaSpeed ;
             yield return new WaitForSeconds(0.01f);
         }
-
+        _startMoving = false;
     }
 
     public void OnTriggersEnter()
     {
-        Debug.Log("Trigger");
         _isTrigger = true;
     }
     public void OnTriggersExit()
     {
-        Debug.Log("NON Trigger");
         _isTrigger = false;
     }
 
