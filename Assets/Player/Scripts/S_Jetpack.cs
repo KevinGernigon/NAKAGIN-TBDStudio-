@@ -35,7 +35,7 @@ public class S_Jetpack : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Y) && _isJetpackAvaible)
+        if (Input.GetButtonDown("Jetpack") && _isJetpackAvaible)
             JetpackFunction();
 
     }

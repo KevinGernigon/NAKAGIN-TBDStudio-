@@ -16,6 +16,7 @@ public class S_PlayerCam : MonoBehaviour
     public S_GrappinV2 GrapplingHookScript;
     public Transform _orientation;
     public Transform player;
+    public Transform respawnPoint;
 
     public float _xRotation;
     public float _yRotation;
@@ -87,18 +88,15 @@ public class S_PlayerCam : MonoBehaviour
             else
                 _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * -_sensY * _sensiSlider.value;
             ////////////////
-            _yRotation += _mouseX;
-            _xRotation -= _mouseY;
-            _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
+            ///
+            
+                _yRotation += _mouseX;
+                _xRotation -= _mouseY;
+                _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
 
-            transform.rotation = Quaternion.Euler(_xRotation, _yRotation, tilt);
-            _orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
+                transform.rotation = Quaternion.Euler(_xRotation, _yRotation, tilt);
+                _orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
         }
-
-        if (Input.GetKeyDown(KeyCode.H))
-            CameraReset();
-
-        
 
         if(!pm._isWallRunning && !pm._isSliding && !ClimbingScript._isAchievedClimb && !GrapplingHookScript.isIncreaseFOV && !pm._isDashing)
         {
@@ -181,8 +179,10 @@ public class S_PlayerCam : MonoBehaviour
     IEnumerator resetcam()
     {
         _isActive = false;
+        _xRotation = respawnPoint.rotation.eulerAngles.x;
+        _yRotation = respawnPoint.rotation.eulerAngles.y;
         Camera.main.transform.rotation = Quaternion.identity;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.01f);
         _isActive = true;
     }
 }
