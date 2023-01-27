@@ -49,6 +49,11 @@ public class S_Sliding : MonoBehaviour
             StartSlide();
         }
 
+        if(Input.GetKeyDown(_slideKey) && (_horizontalInput != 0 || _verticalInput != 0) && !_pm._isGrounded)
+        {
+            StartCoroutine(waitForGround());
+        }
+
         if(Input.GetKeyUp(_slideKey) && _pm._isSliding)
         {
             StopSlide();
@@ -110,5 +115,11 @@ public class S_Sliding : MonoBehaviour
         _pm._isSliding = false;
 
         _playerObj.localScale = new Vector3(_playerObj.localScale.x, _startYScale, _playerObj.localScale.z);
+    }
+
+    IEnumerator waitForGround()
+    {
+        yield return new WaitUntil(() => _pm._isGrounded);
+        StartSlide();
     }
 }
