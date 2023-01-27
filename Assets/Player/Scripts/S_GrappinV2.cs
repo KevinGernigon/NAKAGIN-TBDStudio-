@@ -97,7 +97,7 @@ public class S_GrappinV2 : MonoBehaviour
         }
 
         lr.SetPosition(lr.positionCount - 1, _grappingTransform.position);
-
+    
     }*/
     private void ExecuteGrapple()
     {
@@ -128,4 +128,5 @@ public class S_GrappinV2 : MonoBehaviour
 
     }
 }
+
     

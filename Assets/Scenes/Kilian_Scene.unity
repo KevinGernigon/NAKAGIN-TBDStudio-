@@ -41842,8 +41842,16 @@ PrefabInstance:
       value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 1392589759567187903, guid: c952cb61c1cc83344a8097aec1019f86, type: 3}
+      propertyPath: _slideSpeed
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392589759567187903, guid: c952cb61c1cc83344a8097aec1019f86, type: 3}
       propertyPath: _jumpCooldown
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392589759567187903, guid: c952cb61c1cc83344a8097aec1019f86, type: 3}
+      propertyPath: _fallMultiplier
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c952cb61c1cc83344a8097aec1019f86, type: 3}

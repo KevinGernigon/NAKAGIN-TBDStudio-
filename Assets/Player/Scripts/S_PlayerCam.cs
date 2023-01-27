@@ -17,10 +17,10 @@ public class S_PlayerCam : MonoBehaviour
     public Transform _orientation;
     public Transform player;
 
-    float _xRotation;
-    float _yRotation;
-    float _mouseX;
-    float _mouseY;
+    public float _xRotation;
+    public float _yRotation;
+    public float _mouseX;
+    public float _mouseY;
 
     [Header("Camera")]
     [SerializeField] private Camera cam;

@@ -17,6 +17,7 @@ public class S_Dash : MonoBehaviour
     [SerializeField] private float _dashDuration;
     public float _dashUpgradeForce;
     private float lastPressTime;
+    public float _limitDash = 1;
 
     [Header("Settings")]
     [SerializeField] private bool _isUsingCameraForward = true;
@@ -53,6 +54,7 @@ public class S_Dash : MonoBehaviour
     public void ButtonAxel()
     {
         AxelIsHere = !AxelIsHere;
+        
     }
 
     private void InputManager()
@@ -82,13 +84,15 @@ public class S_Dash : MonoBehaviour
 
     private void DashFunction()
     {
+        if (_limitDash <= 0) return;
         if (_dashCdTimer > 0) return;
         if (_pm._isFreezing) return;
 
         else _dashCdTimer = _dashCd;
 
+        _limitDash--;
         _pm._isDashing = true;
-
+        _pm._readyToJump = false;
         Transform forwardT;
 
         if (_isUsingCameraForward)
@@ -127,7 +131,7 @@ public class S_Dash : MonoBehaviour
     {
         _pm._isDashing = false;
         _pm._ReachUpgradeBool = false;
-
+        _pm._readyToJump = true;
         if (_isDisablingGravity)
         {
             _rb.useGravity = true;
