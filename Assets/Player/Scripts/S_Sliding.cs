@@ -117,9 +117,24 @@ public class S_Sliding : MonoBehaviour
         _playerObj.localScale = new Vector3(_playerObj.localScale.x, _startYScale, _playerObj.localScale.z);
     }
 
+    public void EnterSlideForRamp()
+    {
+        _maxSlideTime = 10f;
+        _slideTimer = _maxSlideTime;
+    }
+    public void EndSlideForRamp()
+    {
+        _maxSlideTime = 0.75f;
+        _slideTimer = _maxSlideTime;
+    }
+
+
+
     IEnumerator waitForGround()
     {
         yield return new WaitUntil(() => _pm._isGrounded);
         StartSlide();
     }
+
+
 }
