@@ -19,7 +19,7 @@ public class S_PlayerMovement : MonoBehaviour
     private float _speedChangeFactor;
     public float _fallMultiplier;
 
-    private MovementState _lastState;
+    public MovementState _lastState;
     private bool _isKeepingMomentum;
 
     private float _speedIncreaseMultiplier;
@@ -32,7 +32,7 @@ public class S_PlayerMovement : MonoBehaviour
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpCooldown;
     [SerializeField] private float _airMultiplier;
-    bool _readyToJump;
+    public bool _readyToJump;
 
     [Header("Crouching")]
     [SerializeField] private float _crouchSpeed;
@@ -105,6 +105,8 @@ public class S_PlayerMovement : MonoBehaviour
     public bool _ResetDashSpeed;
     private bool _isEnableMovementOnNextTouch;
     private float _saveWalkSpeed;
+    private bool canJumpLedge;
+    private float _timerJump;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -119,7 +121,8 @@ public class S_PlayerMovement : MonoBehaviour
     {
         //Ground Check
         _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + _valueRaycast, _whatIsGround);
-        
+        //_isGrounded = Physics.BoxCast(transform.position, Vector3.one, Vector3.down, Quaternion.identity, _playerHeight * 0.5f + _valueRaycast, _whatIsGround);
+
         InputCommand();
         SpeedControl();
         StateHandler();
@@ -149,17 +152,35 @@ public class S_PlayerMovement : MonoBehaviour
         {
             _desiredMoveSpeed = _airSpeed;
         }
-        
+
+        if(state != MovementState.air && state != MovementState.dashing) //limit dash in air
+        {
+            ScriptDash._limitDash = 1;
+        }
+
     }
 
     private void FixedUpdate()
     {
         MovingPlayer();
-        if(_lastState != MovementState.dashing)
+        
+        if (_lastState != MovementState.dashing)
         {
-            rb.velocity += Vector3.up * Physics.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
+            rb.velocity += Vector3.up * Physics.gravity.y * _fallMultiplier * Time.deltaTime;
         }
 
+        if (!_isGrounded)
+        {
+            _timerJump += Time.deltaTime;
+            if (_timerJump < _jumpCooldown - 0.00f && _readyToJump)
+            {
+                canJumpLedge = true;
+            }
+            else
+                canJumpLedge = false;
+
+        }
+        else _timerJump = 0f;
     }
 
     private void InputCommand()
@@ -168,13 +189,14 @@ public class S_PlayerMovement : MonoBehaviour
         _verticalInput = Input.GetAxisRaw("Vertical");
 
         //when to jump
-        if (Input.GetButtonDown("Jump") && _readyToJump && _isGrounded)
+        if (Input.GetButtonDown("Jump") && _readyToJump && _isGrounded || (Input.GetButtonDown("Jump") && canJumpLedge))
         {
             _readyToJump = false;
-
             Jump();
-
+            canJumpLedge = false;
             Invoke(nameof(ResetJump), _jumpCooldown);
+
+            
         }
             //When crouch
 
@@ -349,7 +371,6 @@ public class S_PlayerMovement : MonoBehaviour
         else if (!_isGrounded)
         {
             rb.AddForce(_moveDirection.normalized * _moveSpeed * _AerialSpeed * _airMultiplier * _upgradeSpeedValue, ForceMode.Force);
-
         }
 
         if (!_isWallRunning)
@@ -387,6 +408,7 @@ public class S_PlayerMovement : MonoBehaviour
     private void Jump()
     {
         _exitingSlope = true;
+        _readyToJump = false;
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         //rb.velocity = new Vector3(rb.velocity.x, ??, rb.velocity.z);
 
@@ -452,7 +474,23 @@ public class S_PlayerMovement : MonoBehaviour
     {
         float gravity = Physics.gravity.y;
         float displacementY = endPoint.y - startPoint.y;
-        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+        float displacementX = endPoint.x - startPoint.x;
+        float displacementZ = endPoint.z - startPoint.z;
+
+        Vector3 displacementXZ = new Vector3(displacementX, 0f, displacementZ);
+
+
+        if(Mathf.Abs(displacementX) < 20 && Mathf.Abs(displacementZ) < 20)
+        {
+            _wantedSpeedGrappling = 4f;
+            _wantedHeightGrappling = 2f;
+        }
+        else
+        {
+            _wantedSpeedGrappling = 3f;
+            _wantedHeightGrappling = 1.5f;
+        }
+
 
         Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * trajectoryHeight * gravity) * _wantedHeightGrappling;
         Vector3 velocityXZ = (displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight / gravity) + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity))) * _wantedSpeedGrappling;
@@ -476,7 +514,6 @@ public class S_PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         _ReachUpgradeBool = false;
-        Debug.Log(_ReachUpgradeBool);
     }
     
     IEnumerator leaveGround()

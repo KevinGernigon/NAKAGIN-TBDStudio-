@@ -18,10 +18,10 @@ public class S_PlayerCam : MonoBehaviour
     public Transform player;
     public Transform respawnPoint;
 
-    float _xRotation;
-    float _yRotation;
-    float _mouseX;
-    float _mouseY;
+    public float _xRotation;
+    public float _yRotation;
+    public float _mouseX;
+    public float _mouseY;
 
     [Header("Camera")]
     [SerializeField] private Camera cam;
@@ -36,10 +36,13 @@ public class S_PlayerCam : MonoBehaviour
     [SerializeField] private float _wallSlideFov;
     [SerializeField] private float _grapplingHookFov;
     [SerializeField] private float _grapplingHookFovTime;
+    [SerializeField] private float _dashFov;
+    [SerializeField] private float _dashFovTime;
+    [SerializeField] private float _resetFovTime;
     public bool _isAxisXInverted;
     public bool _isAxisYInverted;
     public bool _isActive;
-    public bool _isRespawning = false;
+    public bool boolChangement;
 
     public float tilt { get; private set; }
 
@@ -51,18 +54,27 @@ public class S_PlayerCam : MonoBehaviour
         _isAxisXInverted = true;
         _isAxisYInverted = true;
         _isActive = true;
+        boolChangement = false;
 
-
+        cam.fieldOfView = _fov;
+        tilt = 0;
     }
-
+    private void FixedUpdate()
+    {
+        if (!boolChangement)
+        {
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _resetFovTime * Time.deltaTime);
+            tilt = Mathf.Lerp(tilt, 0, _camTiltTime * Time.deltaTime);
+        }
+    }
     // Update is called once per frame
     private void Update()
     {
+        CameraFOVDash();
         CameraTiltWallRunFPS();
         CameraTiltSlide();
         CameraTiltClimb();
         CameraFOVGrapplingHook();
-
         if (_isActive)
         {
             // Mouse Input //
@@ -76,25 +88,27 @@ public class S_PlayerCam : MonoBehaviour
             else
                 _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * -_sensY * _sensiSlider.value;
             ////////////////
-            if (!_isRespawning)
-            {
+            ///
+            
                 _yRotation += _mouseX;
                 _xRotation -= _mouseY;
                 _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
 
                 transform.rotation = Quaternion.Euler(_xRotation, _yRotation, tilt);
                 _orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
-            }
         }
 
-        if (Input.GetKeyDown(KeyCode.H))
-            CameraReset();
+        if(!pm._isWallRunning && !pm._isSliding && !ClimbingScript._isAchievedClimb && !GrapplingHookScript.isIncreaseFOV && !pm._isDashing)
+        {
+            boolChangement = false;
+        }
     }
 
     private void CameraTiltWallRunFPS()
     {
         if (pm._isWallRunning)
         {
+            boolChangement = true;
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _wallRunFov, _wallRunFovTime * Time.deltaTime);
             if (wr._isWallLeft)
             {
@@ -106,47 +120,38 @@ public class S_PlayerCam : MonoBehaviour
                 tilt = Mathf.Lerp(tilt, _camTiltWR, _camTiltTime * Time.deltaTime);
             }
         }
-        else
-        {
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _wallRunFovTime * Time.deltaTime);
-            tilt = Mathf.Lerp(tilt, 0, _camTiltTime * Time.deltaTime);
-        }
     }
     private void CameraTiltSlide()
     {
         if (pm._isSliding)
         {
+            boolChangement = true;
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _wallSlideFov, _wallSlideFovTime * Time.deltaTime);
             tilt = Mathf.Lerp(tilt, _camTiltSlide, _camTiltTime * Time.deltaTime);
-        }
-        else
-        {
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _wallSlideFovTime * Time.deltaTime);
-            tilt = Mathf.Lerp(tilt, 0, _camTiltTime * Time.deltaTime);
-        }
+        }        
     }
     private void CameraTiltClimb()
     {
         if (ClimbingScript._isAchievedClimb)
         {
-            //cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _wallSlideFov, _wallSlideFovTime * Time.deltaTime);
+            boolChangement = true;
             tilt = Mathf.Lerp(tilt, _camTiltClimbAchieved, _camTiltTime * Time.deltaTime);
-        }
-        else
-        {
-            //cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _wallSlideFovTime* Time.deltaTime);
-            tilt = Mathf.Lerp(tilt, 0, _camTiltTime * Time.deltaTime);
-        }
+        }     
     }
     private void CameraFOVGrapplingHook()
     {
         if (GrapplingHookScript.isIncreaseFOV)
         {
+            boolChangement = true;
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _grapplingHookFov, _grapplingHookFovTime * Time.deltaTime);
         }
-        else
+    }
+    private void CameraFOVDash()
+    {
+        if (pm._isDashing)
         {
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _fov, _grapplingHookFovTime * Time.deltaTime);
+            boolChangement = true;
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _dashFov, _dashFovTime * Time.deltaTime);
         }
     }
 

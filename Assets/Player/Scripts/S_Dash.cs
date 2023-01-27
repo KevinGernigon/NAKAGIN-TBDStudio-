@@ -16,6 +16,8 @@ public class S_Dash : MonoBehaviour
     [SerializeField] private float _dashUpwardForce;
     [SerializeField] private float _dashDuration;
     public float _dashUpgradeForce;
+    private float lastPressTime;
+    public float _limitDash = 1;
 
     [Header("Settings")]
     [SerializeField] private bool _isUsingCameraForward = true;
@@ -30,6 +32,8 @@ public class S_Dash : MonoBehaviour
     [Header("Input")]
     public KeyCode dashKey = KeyCode.E;
 
+    public bool AxelIsHere = false;
+    private const float DOUBLE_CLICK_TIME = .2f;
     // Start is called before the first frame update
     private void Start()
     {
@@ -41,24 +45,54 @@ public class S_Dash : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetButtonDown("Dash"))
-        {
-            DashFunction();
-        }
+        InputManager();
 
         if (_dashCdTimer > 0)
             _dashCdTimer -= Time.deltaTime;
     }
 
+    public void ButtonAxel()
+    {
+        AxelIsHere = !AxelIsHere;
+        
+    }
+
+    private void InputManager()
+    {
+        if (AxelIsHere)
+        {
+            if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0 || (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0) ||
+            Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0 || (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0))
+            {
+
+                float timeSinceLastPress = Time.time - lastPressTime;
+
+                if (timeSinceLastPress <= DOUBLE_CLICK_TIME)
+                {
+                    DashFunction();
+                }
+                lastPressTime = Time.time;
+            }
+        }
+        
+
+        if (Input.GetButtonDown("Dash"))
+        {
+            DashFunction();
+        }
+    }
+
     private void DashFunction()
     {
+        if (_limitDash <= 0) return;
         if (_dashCdTimer > 0) return;
         if (_pm._isFreezing) return;
 
         else _dashCdTimer = _dashCd;
 
+        _limitDash--;
         _pm._isDashing = true;
-
+        _pm._readyToJump = false;
         Transform forwardT;
 
         if (_isUsingCameraForward)
@@ -97,7 +131,7 @@ public class S_Dash : MonoBehaviour
     {
         _pm._isDashing = false;
         _pm._ReachUpgradeBool = false;
-
+        _pm._readyToJump = true;
         if (_isDisablingGravity)
         {
             _rb.useGravity = true;

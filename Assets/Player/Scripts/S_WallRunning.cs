@@ -55,6 +55,7 @@ public class S_WallRunning : MonoBehaviour
     [Header("References")]
     public Transform _orientation;
     private S_PlayerMovement pm;
+    [SerializeField] private S_Climbing ClimbScript;
     private Rigidbody rb;
 
 
@@ -162,6 +163,7 @@ public class S_WallRunning : MonoBehaviour
             if (!pm._isWallRunning)
             {
                 StartWallRun();
+               
             }
 
             if(_wallRunTimer > 0)
@@ -186,6 +188,7 @@ public class S_WallRunning : MonoBehaviour
             if (pm._isWallRunning)
             {
                 StopWallRun();
+
             }
             if(_exitWallTimer > 0)
             {
@@ -214,6 +217,8 @@ public class S_WallRunning : MonoBehaviour
         _wallRunTimer = _maxWallRunTime;
 
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        ClimbScript._maxWallLookAngle = 0;
 
         _isWallRemembered = false;
     }
@@ -264,6 +269,7 @@ public class S_WallRunning : MonoBehaviour
     private void StopWallRun()
     {
         pm._isWallRunning = false;
+        ClimbScript._maxWallLookAngle = 30f;
     }
     
     //Reset _lastWall

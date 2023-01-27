@@ -27,8 +27,8 @@ public class S_Climbing : MonoBehaviour
     [Header("Detection")]
     [SerializeField] private float _detectionLength;
     [SerializeField] private float _sphereCastRadius;
-    [SerializeField] private float _maxWallLookAngle;
-    private float _wallLookAngle;
+    [SerializeField] public float _maxWallLookAngle;
+    public float _wallLookAngle;
 
     private RaycastHit _frontWallHit;
     private bool _isWallFront;

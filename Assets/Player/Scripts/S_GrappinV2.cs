@@ -44,7 +44,7 @@ public class S_GrappinV2 : MonoBehaviour
         if (_grapplingCdTimer > 0)
             _grapplingCdTimer -= Time.deltaTime;
 
-        //updateAction.Invoke();
+        //updateAction?.Invoke();
 
     }
 
@@ -82,7 +82,7 @@ public class S_GrappinV2 : MonoBehaviour
     }
 
 
-/*    private void SetGraplin(Vector3 finalPos)
+    /*private void SetGraplin(Vector3 finalPos)
     {
         float i = 0f;
         lr.positionCount = 1000;
@@ -91,13 +91,13 @@ public class S_GrappinV2 : MonoBehaviour
         {
             //var tempPosition = Vector3.Lerp(_grappingTransform.position, finalPos, i);
             var tempPosition = Vector3.Lerp(finalPos, _grappingTransform.position, i);
-            tempPosition = new Vector3(tempPosition.x, tempPosition.y + Mathf.Cos(5*Time.time*i) * 0.1f , tempPosition.z); 
+            tempPosition = new Vector3(tempPosition.x, tempPosition.y + Mathf.Cos(5 * Time.time * i) * 0.1f, tempPosition.z);
             lr.SetPosition(y, tempPosition);
             i = (float)y / (float)lr.positionCount;
         }
 
         lr.SetPosition(lr.positionCount - 1, _grappingTransform.position);
-
+    
     }*/
     private void ExecuteGrapple()
     {
@@ -128,4 +128,5 @@ public class S_GrappinV2 : MonoBehaviour
 
     }
 }
+
     
