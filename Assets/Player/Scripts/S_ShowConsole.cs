@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class S_ShowConsole : MonoBehaviour
 {
+    private S_Timer S_Timer;
+
+
+
     // Start is called before the first frame update
     void Start()
     {

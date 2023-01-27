@@ -76,15 +76,14 @@ public class S_PlayerCam : MonoBehaviour
             else
                 _mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * -_sensY * _sensiSlider.value;
             ////////////////
-            if (!_isRespawning)
-            {
+            
                 _yRotation += _mouseX;
                 _xRotation -= _mouseY;
                 _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
 
                 transform.rotation = Quaternion.Euler(_xRotation, _yRotation, tilt);
                 _orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
-            }
+            
         }
 
         if (Input.GetKeyDown(KeyCode.H))
