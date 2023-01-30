@@ -27,6 +27,9 @@ public class S_Timer : MonoBehaviour
     {
         _timerTime = Time.time;
 
+        S_Debugger.AddButton("Start Chrono",TimerStart);
+        S_Debugger.AddButton("Stop Chrono",TimerStop);
+        S_Debugger.AddButton("Restet Chrono",TimerReset);
     }
 
     private void Update()
