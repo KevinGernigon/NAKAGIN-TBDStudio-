@@ -111,9 +111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc0c95c4b1496440bc627132c5c4a73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _BounceHight: 3000
-  _BounceFront: 1500
+  _BounceHight: 6000
+  _BounceFront: 2500
   _orientationPlayer: {fileID: 0}
+  _PlayerContent: {fileID: 0}
 --- !u!54 &2781905098224877230
 Rigidbody:
   m_ObjectHideFlags: 0
